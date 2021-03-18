@@ -1,0 +1,146 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx, amsmath, amssymb, amsthm, mdframed, enumerate, tikz, tensor}
+
+\newenvironment{solution}{\begin{mdframed}[skipabove=\baselineskip,innertopmargin=\baselineskip,innerbottommargin=\baselineskip]
+  %\ignorespaces
+  }{\end{mdframed}}
+
+
+\begin{document}
+%\begin{bmatrix}\end{bmatrix}
+\author{Drishan Sarkar}
+\title{CSCI-PHYS 3090 -- Quantum Computing\\ Problem Set \#2 \\  Due: Wednesday, February 3, at 11am}
+\maketitle
+
+ 
+ \noindent 1. [No communication between independent systems] (/40)
+
+... show that the independent evolution of two separate systems
+does not communicate information, which seems intuitive. We do this by showing that the
+unitary evolution of each system commutes, that is, we can evolve the first system and then
+the second, or the other way around, it makes no difference.
+\begin{enumerate}[(i)]
+\item Let $X$ and $Y$ be $n$ and $m$ dimensional Hilbert spaces, respectively. What is the
+dimension of the product space $X \otimes Y$? How could you write down its basis vectors
+in terms of the basis vectors of $X$ and $Y$ ?\\
+\item Let $U$ be a unitary operator acting on $X$, and $V$ a unitary operator acting on $Y$. Find
+the action of $I \otimes V$ on an arbitrary basis vector of the product space, where $I$ is the
+identity matrix of appropriate dimension.\\
+\item Now find the action of $(U\otimes I)(I\otimes V)$ on the same arbitrary basis vector of the product
+space.
+\item Show that $(U\otimes I)(I\otimes V) = (I\otimes V)(U\otimes I)$ for all such $U,V$.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(i)]
+    \item
+    The product space $X \otimes Y$ is $nm$-dimensional. Let the basis vectors of $X$ be $\{\overrightarrow{e}_1,...,\overrightarrow{e}_n\}$ and the basis vectors of $Y$ be $\{\overrightarrow{f}_1,...,\overrightarrow{f}_m\}$. We could write down the basis vectors of the product space as $\overrightarrow{e}_i\otimes \overrightarrow{f}_j$ where $i=1,...,n$ and $j=1,...,m$.
+    \item 
+    $I\otimes V = \begin{bmatrix}
+    V & 0 & \cdots & 0 \\
+    0 & V & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & V 
+    \end{bmatrix}$
+    \item 
+    $(U\otimes I)(I\otimes V) = 
+    \begin{bmatrix}
+    u_{11}I & u_{12}I & \cdots & u_{1n}I \\
+    u_{12}I & u_{22}I & \cdots & u_{2n}I \\
+    \vdots & \vdots & \ddots & \vdots \\
+    u_{n1}I & u_{n2}I & \cdots & u_{nn}I 
+    \end{bmatrix}\begin{bmatrix}
+    V & 0 & \cdots & 0 \\
+    0 & V & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & V 
+    \end{bmatrix}\\ = \begin{bmatrix}
+    Vu_{11}I & Vu_{12}I & \cdots & Vu_{1n}I \\
+    Vu_{12}I & Vu_{22}I & \cdots & Vu_{2n}I \\
+    \vdots & \vdots & \ddots & \vdots \\
+    Vu_{n1}I & Vu_{n2}I & \cdots & Vu_{nn}I 
+    \end{bmatrix}$
+    \item 
+    $(I\otimes V)(U\otimes I) = 
+    \begin{bmatrix}
+    V & 0 & \cdots & 0 \\
+    0 & V & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & V 
+    \end{bmatrix}\begin{bmatrix}
+    u_{11}I & u_{12}I & \cdots & u_{1n}I \\
+    u_{12}I & u_{22}I & \cdots & u_{2n}I \\
+    \vdots & \vdots & \ddots & \vdots \\
+    u_{n1}I & u_{n2}I & \cdots & u_{nn}I 
+    \end{bmatrix} \\ = \begin{bmatrix}
+    Vu_{11}I & Vu_{12}I & \cdots & Vu_{1n}I \\
+    Vu_{12}I & Vu_{22}I & \cdots & Vu_{2n}I \\
+    \vdots & \vdots & \ddots & \vdots \\
+    Vu_{n1}I & Vu_{n2}I & \cdots & Vu_{nn}I 
+    \end{bmatrix}\vspace{2em}$ \\ This is the same as the result from part (iii), showing for all such $U,V$ that $(U\otimes I)(I\otimes V) = (I\otimes V)(U\otimes I)$.
+\end{enumerate}
+\end{solution}
+
+\newpage
+
+ \noindent 2. [Tensor Products] (/30)
+ 
+ This problem is to give you more practice working with tensor products. In this case, we
+will consider tensor products of both operators and Hilbert spaces, representing physically
+both separated systems and separated operations on those systems.
+\begin{enumerate}[(i)]
+\item Let $X$ and $Y$ be $n$ and $m$ dimensional Hilbert spaces, respectively. Let $|x\rangle \in X$,
+$|y\rangle \in Y$. Let $U$ be a unitary operator acting on $X$ and $V$ a unitary operator acting
+on $Y$. What is the dimension of the tensor product operator $U\otimes V$? What is the dimension of that operator acting on a ket, i.e. $(U \otimes V )(|x\otimes y\rangle)$?
+\item Show that $$(U\otimes V)(|x \otimes y \rangle) = (U|x\rangle)\otimes(V|y\rangle)$$ for all such $U,V$.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(i)]
+    \item 
+    The tensor product operator $U\otimes V$ would have dimension $nm\times nm$, and that operator acting on a ket would be $nm\times 1$.
+    \item  Let the basis vectors of $X$ be $\{\overrightarrow{e}_1,...,\overrightarrow{e}_n\}$ and the basis vectors of $Y$ be $\{\overrightarrow{f}_1,...,\overrightarrow{f}_m\}$. Then, \begin{align*}
+        (U\otimes V)(|x \otimes y \rangle) &= U\{\overrightarrow{e}_1,...,\overrightarrow{e}_n\} \otimes V\{\overrightarrow{f}_1,...,\overrightarrow{f}_m\}\\
+        &= (U|x\rangle)\otimes(V|y\rangle)
+    \end{align*}
+\end{enumerate}
+\end{solution}
+
+\newpage
+
+ \noindent 3. [Bernoulli Vectors] (/30)
+ 
+The multivariate Bernoulli vectors are random unit vectors that describe a random experiment
+with $k$ possible outcomes, each outcome occurring with probability $p_k$. We will consider
+two Boolean random variables in this context occurring in two independent spaces.
+
+\begin{enumerate}[(i)]
+\item Imagine a Boolean random variable $P$ that is 1 with probability $p$ and 0 with probability $1 - p$. We can write its distribution as the two-dimensional vector $[1 - p, p]^T \in \textbf{R}^2$. Assume now that we have two such independent random variables $P$ and $Q$, with probability $p$ and $q$ of being 1, respectively. Write down the four-dimensional vector giving the probabilities of the four possible values of the pair $(P,Q)$, using the order 00, 01, 10, and 11.
+
+\item Write the same four-dimensional vector in terms of the vectors $|u\rangle = [1-p,p]^T$ and $|v\rangle = [1-q,q]^T$.
+
+\item Find a $2\times2$ matrix $X$ such that if $|u\rangle = [1-p, p]^T$ is the distribution of the Boolean random variable $P$, then $X|u\rangle$ is the distribution of the random variable $P$ obtained by negating the bit $P$.
+
+\item Let $R$ be an arbitrary random variable taking values in $\{00, 01, 10, 11\}$, and let $r \in \textbf{R}^4$ be its distribution. Find a $4\times4$ matrix $\tilde{X}$ such that $\tilde{X}r$ is the distribution of neg$_1(R)$ where neg$_1$ negates the first bit of $R$.
+
+\end{enumerate}
+
+
+\begin{solution}
+\begin{enumerate}[(i)]
+    \item $\begin{bmatrix}(1-p)(1-p),&(1-p)q,&p(1-q),&pq\end{bmatrix}^T$
+    
+    \item $|u\otimes v\rangle$
+    
+    \item $X = \begin{bmatrix}0&1\\1&0\end{bmatrix}$
+    
+    \item $\tilde{X} = \begin{bmatrix}
+    0&0&1&0\\0&0&0&1\\1&0&0&0\\0&1&0&0
+    \end{bmatrix}$
+\end{enumerate}
+\end{solution}
+
+
+ 
+ 
+ \end{document}
