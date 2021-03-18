@@ -1,19 +1,15 @@
 \documentclass[11pt]{article}
 \usepackage{graphicx, amsmath, amssymb, amsthm, mdframed, enumerate, tikz, tensor, qcircuit}
 \newenvironment{solution}{\begin{mdframed}[skipabove=\baselineskip,innertopmargin=\baselineskip,innerbottommargin=\baselineskip]
-  %\ignorespaces
   }{\end{mdframed}}
 
-
-
 \begin{document}
-%\begin{bmatrix}\end{bmatrix}
 \author{Drishan Sarkar}
 \title{CSCI-PHYS 3090 -- Quantum Computing\\ Problem Set \#3 \\  Due: Wednesday, February 10, at 11am}
 \maketitle
-
  
  \noindent 1. [Conjugating CNOT] (/40)
+ 
 The Hadamard gate for a single qubit operation is defined by the following transformation
 $$H = \frac{1}{\sqrt{2}}\begin{bmatrix}
 1 & 1 \\ 1 & -1
@@ -114,6 +110,7 @@ which means that it acts on the Cbit basis vectors to produce $H |0\rangle = |+\
 \newpage
 
  \noindent 2. [Toffoli Gates] (/30)
+
 The three qubit controlled-controlled-NOT gate $T_{ijk}$ (also called the \textit{Toffoli} gate, after its inventor) plays a very important role in the classical theory of reversible computation. It has two control bits ($i$ and $j$) and a target bit $k$, and is defined to act as the identity unless both control bits are 1, in which case it acts as NOT on the target bit. The control bits themselves are unaltered.
 
 \begin{enumerate}[(i)]
@@ -170,7 +167,9 @@ The three qubit controlled-controlled-NOT gate $T_{ijk}$ (also called the \texti
     T_{102}=T_{012}$
 \end{enumerate}
 \end{solution}
+
 \vspace{3em}
+
  \noindent 3. [Bell States] (/30)
  
 This problem concerns the set of two qubit entangled states, $|\phi_i\rangle : i=0,1,2,3$, that are defined in the circuits below. They are called Bell states (after a famous physicist John Bell who provided an exquisite recipe for experimentally testing the completeness of quantum.)
@@ -228,9 +227,5 @@ This problem concerns the set of two qubit entangled states, $|\phi_i\rangle : i
     
     For $|\phi_3\rangle = \frac{|00\rangle-|11\rangle}{\sqrt{2}}$,  $p_\phi(0) = |\langle0|\phi\rangle|^2 = \frac{1}{2}, p_\phi(1) = |\langle1|\phi\rangle|^2 = \frac{1}{2}$, and the post measurement state is 1. \\
 \end{enumerate}
-\end{solution}
-
-
- 
- 
- \end{document}
+\end{solution} 
+\end{document}
