@@ -1,0 +1,125 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx, amsmath, amssymb, amsthm, mdframed, enumerate, tikz, tensor}
+
+\newenvironment{solution}{\begin{mdframed}[skipabove=\baselineskip,innertopmargin=\baselineskip,innerbottommargin=\baselineskip]
+  %\ignorespaces
+  }{\end{mdframed}}
+
+
+\begin{document}
+
+\author{Drishan Sarkar}
+\title{CSCI-PHYS 3090 -- Quantum Computing\\ Problem Set \#1 \\  Due: Wednesday, January 27 at 11am}
+\maketitle
+
+ 
+ \noindent 1. [Lucas Numbers] (/40)
+
+    \[
+	L_n = 
+	\begin{cases} 
+	2 & \text{ if } n = 0,\\
+	1 & \text{ if } n = 1,\\
+	L_{n-2}+L_{n-1} & \text{ otherwise. } 
+	\end{cases} 
+	\]
+	
+	\[
+	\Gamma_n = 
+	\begin{cases} 
+	1 & \text{ if } n = 0,\\
+	2 & \text{ if } n = 1,\\
+	\Gamma_{n-2}+\Gamma_{n-1} & \text{ otherwise. } 
+	\end{cases} 
+	\]
+
+\begin{enumerate}[(i)]
+\item Prove that $\Gamma_n = (-1)^{n-1}L_{n-1}$ for every positive integer $n$.\\
+
+\item Prove that any positive integer can be written as the sum of distinct non-consecutive Lucas Numbers; that is. if $L_i$ appears in the sum, then $L_{i-1}$ and $L_{i+1}$ cannot.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(i)]
+    \item\begin{proof}
+    For our base case consider $n=2$. Then $\Gamma_2 = (-1)^{1}L_{1} = -1$ and this is true. Now for our induction hypothesis, assume $\Gamma_i = (-1)^{i-1}L_{i-1} $ for all $2 \leq i\leq n$. Then by definition of $\Gamma$,
+    \begin{align*}
+        \Gamma_{n+1} &= \Gamma_{n-1} - \Gamma_{n} \\
+        &= {-1}^{2n-2}\Gamma_{n-1} - 1^{2n-1}\Gamma_{n} \\
+        &= {-1}^{n}({-1}^{n-2}\Gamma_{n-1} - 1^{n-1}\Gamma_{n}) \\
+        &= {-1}^n(L_{n-2}+L_{n-1}) & \text{inductive step} \\
+        &= -1^nL_n \\
+        \text{Thus,} \\
+        \Gamma_n &= (-1)^{n-1}L_{n-1}
+    \end{align*}
+    \end{proof}
+    \item\begin{proof}
+    For our base case consider $n=1$. Then $n = L_2 = 1$ and the statement is true. Now for our inductive hypothesis, assume there exists a set of non-consecutive Lucas numbers $K$ such that $k=\sum_{L_j \in k}L_j$ for all $1\leq k \leq n$. Now for $n+1$, unless it itself is a Lucas number, there exists two consecutive Lucas numbers such that $L_i < n+1 < L_{i+1}$. Let $m=n+1-L_i$. So by definition,
+    \begin{align*}
+        L_{i-1}+L_i &= n+1 < L{i+1} \\
+        m &= n+1-L_i<L_{i-1} \\
+    \end{align*}
+    Since $L_i \geq 1$, $m \leq n$. By the inductive hypothesis we can find a set $M$ of non-consecutive Lucas numbers such that $m = \sum_{L_j \in M}L_j$. Now that $m<L_{i-1}<L_i$, we have $L_{i-1},L_i \notin M$ which shows any positive integer can be written as the sum of distinct non-consecutive Lucas Numbers.
+    \end{proof}
+\end{enumerate}
+\end{solution}
+
+\newpage
+
+ \noindent 2. [Tournament Ranking] (/30)
+ 
+ A set of $n$ tennis players $P_1,\cdots,P_n$ play in a tournament in which every player plays a match with every other player [...] A ranking is said to be \textit{justified} if $P_{i_n}\prec P_{i_{n-1}}\prec \cdots \prec P_{i_1}$ Prove: For any integer $n$ and \textit{any} given outcomes of the $n \choose 2$ matches, there is a ranking that is justified.
+\begin{solution}
+    \begin{proof}
+    For our base case, consider $n=2$. $P_1$ is the better player and wins, so the ranking $P_2 \prec P_1$ is justified. Now for our induction hypothesis, assume that for all $2 \leq k  \leq n$ there exists a permutation $i_1,\cdots,i_k$ of $[k]$ such that $P_{i_n}\prec P_{i_k}\prec P_{i_{k-1}}\prec\cdots\prec P_{i_1}$ is justified. Now say we have a new player $P_{Serena}$, so a total of $n+1$ players. Consider the sets $D:=\{P_i : P_{Serena} \text{ defeated } P_i\}$ and $L:=\{P_i : P_{Serena} \text{ lost to } P_i\}$. We can say that $|D|,|L|\leq n$ and are disjoint. By induction, we can find orderings on both sets: $i_1,\cdots,i_d\in D$ and $i_1,\cdots,i_l\in L$ where $P_{i_1}\prec\cdots\prec P_{i_d}$ and $P_{i_l}\prec P_{i_{l-1}}\prec\cdots\prec P_{i_1}$. By changing the labels $i_1,\cdots,i_l$ to $i_{d+1},\cdots,i_{d+l}$, we have $P_{i_d}\prec P_{0}\prec P_{i_{d+1}}$ and the justified ordering
+    $P_{i_{1}}\prec\cdots\prec P_{i_d}\prec P_{0}\prec P_{i_{d+1}} \prec\cdots\prec P_{i_{d+l}}$.
+    \end{proof}
+\end{solution}
+
+\newpage
+
+ \noindent 3. [The Hadamard Matrix] (/30)
+
+ \begin{center}
+    $\textbf{H}_1 \triangleq \frac{1}{\sqrt{2}} \begin{bmatrix}
+    1 & 1 \\ 1 & -1 \end{bmatrix} $ \\
+    $\textbf{H}_n = \textbf{H}_1 \otimes \textbf{H}_{n-1} = \frac{1}{\sqrt{2}} \begin{bmatrix}
+    \textbf{H}_{n-1} & \textbf{H}_{n-1} \\ \textbf{H}_{n-1} & -\textbf{H}_{n-1} 
+    \end{bmatrix} $
+ \end{center}
+
+\begin{enumerate}[(i)]
+\item Find the inverse of $\textbf{H}_n$.\\
+
+\item Show that for all $n$, $\textbf{H}_n$ is unitary.
+\end{enumerate}
+
+
+\begin{solution}
+\begin{enumerate}[(i)]
+    \item $\textbf{H}_n$ is equal to its inverse.
+    \begin{proof}
+    For the base case $n=1$ we have \begin{align*}
+        \textbf{H}_1\textbf{H}_1 &=
+        \frac{1}{\sqrt{2}} \begin{bmatrix}1 & 1 \\ 1 & -1 \end{bmatrix} \cdot \frac{1}{\sqrt{2}} \begin{bmatrix}1 & 1 \\ 1 & -1 \end{bmatrix} \\
+        &= \frac{1}{2} \begin{bmatrix}2 & 0 \\ 0 & 2 \end{bmatrix} \\
+        &= I_2
+    \end{align*}
+    For the induction hypothesis, assume $\textbf{H}_i = \textbf{H}_i^{-1}$ for all $i \leq n$. Consider $n+1$, then \begin{align*}
+        \textbf{H}_{n+1} &= \textbf{H}_{n} \otimes \textbf{H}_{1} \\
+        &= \textbf{H}_{n}^{-1} \otimes \textbf{H}_{1}^{-1} & \text{inductive step}\\
+        &= (\textbf{H}_{n} \otimes \textbf{H}_{1})^{-1} \\
+        &= (\textbf{H}_{n+1})^{-1}
+    \end{align*}
+    \end{proof}
+    
+    \item\begin{proof}
+    We know that $\textbf{H}_n$ is real, symmetric, and is its own inverse. We have $\textbf{H}_n\textbf{H}_n^{\dagger} = I_n = \textbf{H}_n^{\dagger}\textbf{H}_n$, therefore $\textbf{H}_n$ is unitary.
+    \end{proof}
+\end{enumerate}
+\end{solution}
+
+
+ 
+ 
+ \end{document}
