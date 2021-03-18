@@ -1,0 +1,236 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx, amsmath, amssymb, amsthm, mdframed, enumerate, tikz, tensor, qcircuit}
+\newenvironment{solution}{\begin{mdframed}[skipabove=\baselineskip,innertopmargin=\baselineskip,innerbottommargin=\baselineskip]
+  %\ignorespaces
+  }{\end{mdframed}}
+
+
+
+\begin{document}
+%\begin{bmatrix}\end{bmatrix}
+\author{Drishan Sarkar}
+\title{CSCI-PHYS 3090 -- Quantum Computing\\ Problem Set \#3 \\  Due: Wednesday, February 10, at 11am}
+\maketitle
+
+ 
+ \noindent 1. [Conjugating CNOT] (/40)
+The Hadamard gate for a single qubit operation is defined by the following transformation
+$$H = \frac{1}{\sqrt{2}}\begin{bmatrix}
+1 & 1 \\ 1 & -1
+\end{bmatrix}, \hspace{2em} \Qcircuit @C=1em @R=.7em {& \gate{H} & \qw}$$
+which means that it acts on the Cbit basis vectors to produce $H |0\rangle = |+\rangle$ and $H|1\rangle = |-\rangle$. In this problem, we consider the applying quantum gates to a tensor product space $X \otimes Y$, where both spaces are 2-dimensional. Let $|A\rangle=[a_1,a_2]^T$ and $|B\rangle=[b1,b2]^T$ be generic vectors in $X$ and $Y$, respectively.
+\begin{enumerate}[(i)]
+\item Draw the circuit diagram (schematic) for a CNOT gate from $A$ to $B$ ($A$ is the control.)
+\item What is the result of applying this gate to the 4-dimensional vector $|A \otimes B\rangle$? [Hint: How can you write the CNOT gate as a matrix? Apply this to $|A\otimes B\rangle = |A\rangle\otimes |B\rangle$.]
+\item Draw the schematic for the cascaded sequence of the application of Hadamard gates to two qubits $A$ and $B$, followed by a CNOT gate from $A$ to $B$, followed by Hadamard gates to $A$ and $B$ again.
+\item What is the result of running this circuit? 
+[Hint: (i) Write the circuit in matrix form and apply to $|A\otimes B \rangle$. OR (ii) Think about how these operators act on the tensor state $|A\rangle\otimes |B\rangle$.]
+\item Show that this is the same as if you had applied a CNOT gate from $B$ to $A$. 
+[Hint: A CNOT from $A$ to $B$ is not the same gate as a CNOT from $B$ to $A$.]
+\item The above illustrates an important principle of quantum mechanics you may have heard about; that any physical interaction by which A influences B can also cause B to influence A. Explain.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(i)]
+    \item \hspace{2em} \Qcircuit @C=1em @R=.7em 
+                        {\lstick{|A\rangle} & \ctrl{1} & \qw \\\lstick{|B\rangle}& \targ & \qw }
+    \item $\begin{bmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 0 & 1 \\
+        0 & 0 & 1 & 0
+    \end{bmatrix}\begin{bmatrix}
+        a_1b_1 \\
+        a_1b_2 \\
+        a_2b_1 \\
+        a_2b_2
+    \end{bmatrix} = \begin{bmatrix}
+        a_1b_1 \\
+        a_1b_2 \\
+        a_2b_2 \\
+        a_2b_1
+    \end{bmatrix}$
+    \item \hspace{2em} \Qcircuit @C=1em @R=.7em 
+            {\lstick{|A\rangle} & \gate{H} & \ctrl{1} & \gate{H} & \qw \\\lstick{|B\rangle} & \gate{H} & \targ & \gate{H} & \qw }
+    \item $\frac{1}{\sqrt{2}}\begin{bmatrix}a_1 + a_2\\a_1-a_2\end{bmatrix} \otimes \frac{1}{\sqrt{2}}\begin{bmatrix}b_1 + b_2\\b_1-b_2\end{bmatrix} = \frac{1}{2}\begin{bmatrix}
+        (a_1 + a_2)(b_1 + b_2) \\ 
+        (a_1 + a_2)(b_1 - b_2) \\
+        (a_1 - a_2)(b_1 + b_2) \\ 
+        (a_1 - a_2)(b_1 - b_2)
+    \end{bmatrix}\\
+    \begin{bmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 0 & 1 \\
+        0 & 0 & 1 & 0
+    \end{bmatrix}\begin{bmatrix}
+        (a_1 + a_2)(b_1 + b_2) \\ 
+        (a_1 + a_2)(b_1 - b_2) \\
+        (a_1 - a_2)(b_1 + b_2) \\ 
+        (a_1 - a_2)(b_1 - b_2)
+    \end{bmatrix}\frac{1}{2} = \frac{1}{2}\begin{bmatrix}
+        (a_1 + a_2)(b_1 + b_2) \\ 
+        (a_1 + a_2)(b_1 - b_2) \\
+        (a_1 - a_2)(b_1 - b_2) \\ 
+        (a_1 - a_2)(b_1 + b_2)
+    \end{bmatrix}\\
+    \frac{1}{2}\begin{bmatrix}
+        1 & 1 & 1 & 1 \\
+        1 & -1 & 1 & -1 \\
+        1 & 1 & -1 & -1 \\
+        1 & -1 & -1 & 1
+    \end{bmatrix}
+    \frac{1}{2}\begin{bmatrix}
+        (a_1 + a_2)(b_1 + b_2) \\ 
+        (a_1 + a_2)(b_1 - b_2) \\
+        (a_1 - a_2)(b_1 - b_2) \\ 
+        (a_1 - a_2)(b_1 + b_2)
+    \end{bmatrix} = \begin{bmatrix}
+        a_1b_1 \\
+        a_2b_2 \\
+        a_2b_1 \\
+        a_1b_2
+    \end{bmatrix}$
+    \item $\begin{bmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 1\\
+        0 & 0 & 1 & 0 \\
+        0 & 1 & 0 & 0 
+    \end{bmatrix}\begin{bmatrix}
+        a_1b_1 \\
+        a_1b_2 \\
+        a_2b_1 \\
+        a_2b_2
+    \end{bmatrix} = \begin{bmatrix}
+        a_1b_1 \\
+        a_2b_2 \\
+        a_2b_1 \\
+        a_1b_2
+    \end{bmatrix}$, which is the same as above.
+    \item By applying gates such as Hadamard and CNOT, the qubits $A$ and $B$ can become entangled. This entanglement causes the actions on one qubit to influence the other, since the system no longer consists of a combination of independent states. 
+\end{enumerate}
+\end{solution}
+
+\newpage
+
+ \noindent 2. [Toffoli Gates] (/30)
+The three qubit controlled-controlled-NOT gate $T_{ijk}$ (also called the \textit{Toffoli} gate, after its inventor) plays a very important role in the classical theory of reversible computation. It has two control bits ($i$ and $j$) and a target bit $k$, and is defined to act as the identity unless both control bits are 1, in which case it acts as NOT on the target bit. The control bits themselves are unaltered.
+
+\begin{enumerate}[(i)]
+\item Generalize your knowledge of the CNOT gate to suggest a schematic representation for the Toffoli gate, $T_{012}$.
+\item Construct the matrix representation of $T_{012}$ in the set of 3-Cbit states $|x_2\rangle|x_1\rangle|x_0\rangle$.
+[Hint: Work out how $T_{012}$ operates on the 8 basis vectors using the conventional row and column ordering, $000,001,...,111$.]
+\item Find the $8\times8$ matrix representation of $T_{120},T_{201},T_{102}$.
+[Hint: Follow same process as (ii), only be careful on which bit we are targeting, ie, which basis vectors are flipped.]
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(i)]
+    \item \hspace{1em} \Qcircuit @C=1em @R=.7em 
+                        {& \ctrl{1} & \qw \\ & \ctrl{1} & \qw \\ & \targ & \qw }
+    \item $T_{012}=\begin{bmatrix}
+    1&0&0&0&0&0&0&0 \\
+    0&1&0&0&0&0&0&0 \\
+    0&0&1&0&0&0&0&0 \\
+    0&0&0&1&0&0&0&0 \\
+    0&0&0&0&1&0&0&0 \\
+    0&0&0&0&0&1&0&0 \\
+    0&0&0&0&0&0&0&1 \\
+    0&0&0&0&0&0&1&0
+    \end{bmatrix}\hspace{3em}\begin{array}{c}
+        |000\rangle \\
+        |001\rangle \\
+        |010\rangle \\
+        |011\rangle \\
+        |100\rangle \\
+        |101\rangle \\
+        |110\rangle \\
+        |111\rangle
+    \end{array}$
+    \item $T_{120}=\begin{bmatrix}
+    1&0&0&0&0&0&0&0 \\
+    0&1&0&0&0&0&0&0 \\
+    0&0&1&0&0&0&0&0 \\
+    0&0&0&1&0&0&0&0 \\
+    0&0&0&0&1&0&0&0 \\
+    0&0&0&0&0&0&0&1 \\
+    0&0&0&0&0&0&1&0 \\
+    0&0&0&0&0&1&0&0
+    \end{bmatrix},\\
+    T_{201}=\begin{bmatrix}
+    1&0&0&0&0&0&0&0 \\
+    0&1&0&0&0&0&0&0 \\
+    0&0&1&0&0&0&0&0 \\
+    0&0&0&0&0&0&0&1 \\
+    0&0&0&0&1&0&0&0 \\
+    0&0&0&0&0&1&0&0 \\
+    0&0&0&0&0&0&1&0 \\
+    0&0&0&1&0&0&0&0
+    \end{bmatrix},
+    T_{102}=T_{012}$
+\end{enumerate}
+\end{solution}
+\vspace{3em}
+ \noindent 3. [Bell States] (/30)
+ 
+This problem concerns the set of two qubit entangled states, $|\phi_i\rangle : i=0,1,2,3$, that are defined in the circuits below. They are called Bell states (after a famous physicist John Bell who provided an exquisite recipe for experimentally testing the completeness of quantum.)
+
+    $$|\phi_0\rangle=\hspace{1em} \Qcircuit @C=1.5em @R=1.2em {
+    & \lstick{|0\rangle_1} & \gate{H} & \ctrl{1} & \qw & \qw \\
+    & \lstick{|0\rangle_2} & \qw & \targ & \qw & \qw
+    } \hspace{2em} 
+    |\phi_1\rangle=\hspace{1em} \Qcircuit @C=1.7em @R=1.2em {
+    & \lstick{|0\rangle_1} & \gate{H} & \ctrl{1} & \qw & \qw \\
+    & \lstick{|0\rangle_2} & \qw & \targ & \gate{X} & \qw
+    }$$\vspace{1em}
+    $$|\phi_2\rangle=\hspace{1em} \Qcircuit @C=1.3em @R=1.2em {
+    & \lstick{|0\rangle_1} & \gate{H} & \ctrl{1} & \qw & \qw \\
+    & \lstick{|0\rangle_2} & \qw & \targ & \gate{Y} & \qw
+    } \hspace{2em} 
+    |\phi_3\rangle=\hspace{1em} \Qcircuit @C=1.7em @R=1.2em {
+    & \lstick{|0\rangle_1} & \gate{H} & \ctrl{1} & \qw & \qw \\
+    & \lstick{|0\rangle_2} & \qw & \targ & \gate{Z} & \qw
+    }$$
+
+\begin{enumerate}[(i)] 
+\item Derive an expression for each $|\phi_i\rangle$ in ket notation from the above circuit diagrams.
+\item Calculate the inner products between any pair of Bell states: $\langle\phi_i|\phi_j\rangle$.
+[Hint: Intuitively, we want the Bell states to form a nice basis.]
+\item Show that, for each of the Bell states, the combination of a CNOT gate and a Hadamard gate transforms a Bell state into a Cbit basis state.
+\item What is the probability of getting the outcome $x \in 0,1$ if you measure the first qubit $|\phi_i\rangle$ in the $\{|0\rangle,|1\rangle\}$ basis? What is the post-measurement state of both qubits? Answer both questions for all $i = 0,1,2,3$.
+[Hint: Recall that for state vector $|\psi\rangle = [|\psi_1\rangle,...,|\psi_n\rangle]^T$, the probability of ending up in state $i$ is $|\psi_i|^2$.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(i)]
+    \item $
+    |\phi_0\rangle = \textbf{C}_{12}\textbf{H}_1|00\rangle = \frac{|00\rangle+|11\rangle}{\sqrt{2}}\\
+    |\phi_1\rangle = \textbf{X}_2\textbf{C}_{12}\textbf{H}_1|00\rangle = \frac{|00\rangle-|11\rangle}{\sqrt{2}}\\
+    |\phi_2\rangle = \textbf{Y}_2\textbf{C}_{12}\textbf{H}_1|00\rangle = \frac{|10\rangle+|01\rangle}{\sqrt{2}}\\
+    |\phi_3\rangle = \textbf{Z}_2\textbf{C}_{12}\textbf{H}_1|00\rangle = \frac{|00\rangle-|11\rangle}{\sqrt{2}}$
+    
+    \item The Bell states are mutually orthogonal, so $\langle\phi_i|\phi_j\rangle = 1$.
+    
+    \item $\frac{|00\rangle+|11\rangle}{\sqrt{2}} \xrightarrow{C_{12}} 
+    \frac{|00\rangle+|10\rangle}{\sqrt{2}} \xrightarrow{H_1} \frac{|+0\rangle+|-0\rangle}{\sqrt{2}}$
+    \begin{align*}
+        &= \frac{1}{\sqrt{2}}\left[\left(\frac{|0\rangle+|1\rangle}{\sqrt{2}}\right)|0\rangle + \left(\frac{|0\rangle-|1\rangle}{\sqrt{2}}\right)|0\rangle\right] \\
+        &= \frac{1}{\sqrt{2}}\left[ \frac{|00\rangle+|10\rangle+|00\rangle-|10\rangle}{\sqrt{2}} \right] \\
+        &= \frac{2|00\rangle}{2} = |00\rangle
+    \end{align*}
+    By similar computation on the other Bell states $|\phi_1\rangle,|\phi_2\rangle,|\phi_3\rangle$ we arrive at $|01\rangle,|10\rangle,|11\rangle$ respectively, showing that the combination of a CNOT gate and a Hadamard gate transforms it into a Cbit basis state.
+    \item 
+    For $|\phi_0\rangle = \frac{|00\rangle+|11\rangle}{\sqrt{2}}$ the probability of getting the outcome $x = 0$ is $p_\phi(0) = |\langle0|\phi\rangle|^2 = \frac{1}{2}$ and for $x = 1$ it is $p_\phi(1) = |\langle1|\phi\rangle|^2 = \frac{1}{2}$. \\ The post measurement state is 1. \\
+    
+    For $|\phi_1\rangle = \frac{|00\rangle-|11\rangle}{\sqrt{2}}$,  $p_\phi(0) = |\langle0|\phi\rangle|^2 = \frac{1}{2}, p_\phi(1) = |\langle1|\phi\rangle|^2 = \frac{1}{2}$, and the post measurement state is 0. \\
+    
+    For $|\phi_2\rangle = \frac{|10\rangle+|01\rangle}{\sqrt{2}}$,  $p_\phi(0) = |\langle0|\phi\rangle|^2 = \frac{1}{2}, p_\phi(1) = |\langle1|\phi\rangle|^2 = \frac{1}{2}$, and the post measurement state is 0. \\
+    
+    For $|\phi_3\rangle = \frac{|00\rangle-|11\rangle}{\sqrt{2}}$,  $p_\phi(0) = |\langle0|\phi\rangle|^2 = \frac{1}{2}, p_\phi(1) = |\langle1|\phi\rangle|^2 = \frac{1}{2}$, and the post measurement state is 1. \\
+\end{enumerate}
+\end{solution}
+
+
+ 
+ 
+ \end{document}
