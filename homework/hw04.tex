@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx, amsmath, amssymb, amsthm, mdframed, enumerate, tikz, tensor, qcircuit}
+\newenvironment{solution}{\begin{mdframed}[skipabove=\baselineskip,innertopmargin=\baselineskip,innerbottommargin=\baselineskip]
+  %\ignorespaces
+  }{\end{mdframed}}
+
+\begin{document}
+\author{Drishan Sarkar}
+ 
+\title{CSCI-PHYS 3090 -- Quantum Computing\\ Problem Set \#4 \\  Due: Wednesday, February 24th, at 11am}
+\maketitle
+
+ 
+\noindent 1. [One-time pad encryption] (/30)
+\vspace{1em} \\
+In this problem, we consider messages $m\in\{0,1\}^l$ for some fixed length $\geq 1$. The goal is to consider a special one-time pad and provide some analysis of its implication for the one-time pad scheme.
+
+\begin{enumerate}[(a)]
+    \item For this subproblem, assume that $m = 1010\dots10$. Find a one-time pad $p_m$ such that $m\oplus p_m = 0\dots0$.
+    \item Construct a one-time pad $p_I$ that acts as the identity on every $m \in \{0,1\}$ and prove that it indeed acts as the identity.
+    \item If we choose a one-time pad $p$ uniformly, what is the probability that it is equal to $p_I$ from Part (b)?
+    \item Use your answer from Part (c) to explain why the one-time pad scheme is secure even if there is a nonzero probability of choosing $p_I$.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item $p_m = m$
+    \item $p_I = 0000\dots00$. $1\oplus0=1,0\oplus0=0$ and since for all $i \in 0 \leq i \leq l$, the $\oplus$ operator returns $m_i$ (the $i$'th position of the message $m$) when it acts on a zero, thus acting as the identity.
+    \item $\frac{1}{2^l}$
+    \item The probability decreases exponentially with respect to the size $l$.  
+\end{enumerate}
+\end{solution}
+
+\newpage
+
+\noindent 2. [Quantum cryptography and BB84] (/40)
+\vspace{1em} \\
+Alice and Bob are using BB84 to establish a secret key.
+
+\begin{enumerate}[(a)]
+    \item If Alice transmits 100 bits, each randomly in either $\{|0\rangle,|1\rangle\}$ or $\{|+\rangle,|-\rangle\}$, what is the probability that Bob will be unlucky and choose to measure in the wrong basis every single time?
+\end{enumerate}
+\noindent Eve knows that if she measures in a random basis it will disturb Alice’s transmissions and cause errors in Bob’s copy of the secret key. Then Alice and Bob will notice her eavesdropping. So, she will be sneaky. Eve fixes $a_p\in[0,1]$. With probability $p$, Eve does not measure Alice’s signal. With probability $1-p$, Eve does measure Alice’s signal. If Eve measures, then with even probability, she either measures in the $\{|0\rangle,|1\rangle\}$ or the $\{|+\rangle,|-\rangle\}$ basis.
+\begin{enumerate}[(b)]
+    \item For any given bit of Alice’s signal, what is the probability that Eve measures Alice’s bit in the computational basis?
+\end{enumerate}
+\noindent Consider the case when Alice transmits in the \textit{same} basis that Bob measures in. We are interested in whether or not Eve attempts to intercept this transmission and how that affects the probability that Alice’s and Bob’s bits agree.
+\begin{enumerate}[(c)]
+    \item Assuming  that  Eve  does \textit{not} make  an  attack,  calculate  the  probability  that  Bob’s measurement outcome (i.e., his key bit) is different to the bit transmitted by Alice.
+\end{enumerate}
+\begin{enumerate}[(d)]
+    \item Assuming that Eve \textit{does} make an attack, calculate the probability that Bob’s measurement outcome is equal to the bit transmitted by Alice.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item $\frac{1}{2}^{100} \approx 8 \times 10^{-31}$
+    \item $\frac{1 - p}{2}$
+    \item There is a 50\% chance the incorrectly measured bits are the same as what Alice transmitted, so $\frac{1}{4}$.
+    \item $\frac{1 - p}{4}$
+\end{enumerate}
+\end{solution}
+
+\newpage
+
+\noindent 3. [Impossibility of choosing a basis to identify all of Alice’s signal] (/30)
+\vspace{1em} \\
+Suppose Alice sends Bob one of two states: $|0\rangle$ or $ |\phi\rangle=\alpha|0\rangle+\beta|1\rangle$, with $\alpha\neq 0$. Bob is going to measure to try to figure out which state Alice sent. He has his own orthogonal basis $\{|\psi_0\rangle,|\psi_1\rangle\}$. He concludes that Alice prepared $|0\rangle$ if he gets outcome $|\psi_0\rangle$ and that she prepared $|\phi\rangle$ if he gets outcome $|\psi_1\rangle$. Show that no matter which basis Bob measures in, he will always have some chance of misidentifying Alice’s prepared state.
+
+\begin{solution}
+For Bob to know that Alice prepared in the $|\phi\rangle$ state when he measured in the $|\psi_1\rangle$ basis, $\langle\psi_1|0\rangle=0$ and $\langle\psi_1|\phi\rangle\neq0$. Let $|\psi_1\rangle = \gamma|0\rangle + \delta|1\rangle$, then $\langle\psi_1|0\rangle=0 \implies \gamma\langle0|0\rangle+\delta\langle0|1\rangle = \gamma = 0$. So, $|\delta| = 1$ which requires that $|\psi_1\rangle=|1\rangle$, but since $\langle\psi_0|\psi_1\rangle=0$ we have $\langle\psi_0|\phi\rangle = \alpha$ and this was given to be nonzero. So Bob can measure the state $|\psi_0\rangle$ when Alice sends in the $|\phi\rangle$ state. Thus, there is always a chance he misidentifies Alice’s prepared state.
+\end{solution}
+ 
+\end{document}
