@@ -1,0 +1,155 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx, amsmath, amssymb, amsthm, mdframed, enumerate, tikz, tensor, qcircuit, expdlist}
+\newenvironment{solution}{\begin{mdframed}[skipabove=\baselineskip,innertopmargin=\baselineskip,innerbottommargin=\baselineskip]
+  %\ignorespaces
+  }{\end{mdframed}}
+
+\begin{document}
+\date{}
+\author{Drishan Sarkar}
+\title{CSCI-PHYS 3090 -- Quantum Computing\\ Problem Set \#6 \\  Due: Wednesday, March 10, at 11am}
+\maketitle
+ 
+\noindent 1. [Deutsch-Jozsa | more practice] (/30)
+\\
+We are given a hidden Boolean function $f$, which takes as input a string of bits, and returns either $0$ or $1$, that is: 
+$$f(\{x_0,x_1,x_2,...\}) \xrightarrow{} 0 \text{ or } 1 \text{, where } x_n \text{ is 0 or 1}$$
+The property of the given Boolean function is that it is guaranteed to either be balanced or constant. A constant function returns all 0's or all 1's for any input, while a balanced function returns 0's for exactly half of all inputs and 1's for the other half. Our task is to determine whether the given function is balanced or constant. 
+
+\begin{enumerate}[(a)]
+    \item Classically, in the best case, two queries to the oracle can determine if the hidden Boolean function, $f(x)$ is balanced: e.g., if we get both $f(0, 0, 0, ...) \xrightarrow{} 0$ and $f(1, 0, 0, ...) \xrightarrow{} 1$, then we know the function is balanced as we have obtained the two different outputs. However, in the worst case, we need many more queries. Given that for an $n$-bit string there are $2n$ possible inputs, determine the minimum number of trial inputs to be certain that $f(x)$ is constant in the worst case.
+    
+\listpart{Using a quantum computer, we can solve this problem with 100\% confidence after only one call to the function $f(x)$, provided we have the function $f$ implemented as a quantum oracle, which maps the state $|x\rangle |y\rangle$ to $|x\rangle |y\oplus f(x)\rangle$ where $\oplus$ is addition modulo 2. Below is the generic circuit for the Deutsh-Jozsa algorithm.}
+\listpart{$$\Qcircuit @C=1.5em @R=1.2em {
+    & \lstick{|0\rangle^{\otimes n}} & \qw{/^n} & \gate{H^{\otimes n}} & \multigate{1}{U_f} & \gate{H^{\otimes n}} & \meter \\
+    & \lstick{|1\rangle}    & \qw & \gate{H} & \ghost{U_f} & \qw & \qw }$$}
+\listpart{where $U_f|x,y\rangle = |x,y\oplus f(x)\rangle$ for $x\in\{0,1\}^n$ and $y\in\{0,1\}$ \vspace{1em}\\ --See hw\_06.pdf for the algorithm--}
+
+    \item The first register of two qubits is initialized to $|00\rangle$ and the second register qubit to $|1\rangle$ so that $|\psi_0\rangle = |00\rangle_{12} \otimes |1\rangle_3$. Apply a Hadamard on all qubits to find $|\psi_1\rangle$.
+    \item The oracle function can be implemented as $$\Qcircuit @C=1.5em @R=1.2em {
+    & \lstick{1} & \ctrl{2} & \qw & \qw \\
+    & \lstick{2} & \qw & \ctrl{1} & \qw \\
+    & \lstick{3} & \targ & \targ & \qw}$$ or in math notation as $C_{23}C_{13}$. Show that this choice represents an oracle for a balanced function by evaluating the outcome for the 8 possible computational basis state inputs and interpreting the results.
+    \item For this specific balanced oracle, find $|\psi_2\rangle$.
+    \item Apply a Hadamard on the first register to find $|\psi_3\rangle$
+    \item Explain what happens if you now measure the first two qubits; what result do you obtain and what does that result indicate about the function?
+    \item In Part (c), you considered an oracle that gives a balanced function. Come up with a gate sequence that gives an oracle for a constant function for both possible cases, i.e., $f(x) = 0$ and $f(x) = 1$.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item $2^{n-1}+1$ queries, so just over half of the possible inputs.
+    \item $|\psi_1\rangle = H^{\otimes3}|\psi_0\rangle = \frac{1}{\sqrt{8}}|++\rangle|-\rangle$. Alternatively, \\
+    $|\psi_1\rangle = \frac{1}{2}(|00\rangle|+|01\rangle+|10\rangle+|11\rangle)_{12} \otimes \frac{1}{\sqrt{2}}(|0\rangle-|1\rangle)_3$.
+    \item Looking at the matrix we see that exactly half of the input states (where the first two input qubits have odd parity) receive a phase kickback, which means the oracle function is balanced: \\ $C_{23}C_{13} = \begin{bmatrix} 
+    1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+    \end{bmatrix}$.
+    \item $|\psi_2\rangle = C_{23}C_{13}|\psi_1\rangle = \frac{1}{\sqrt{8}}\begin{bmatrix}1&-1&-1&1&-1&1&1&-1\end{bmatrix}^T$. Or, $|\psi_2\rangle = \frac{1}{\sqrt{2}}|-\rangle_1 \otimes \frac{1}{\sqrt{2}}|-\rangle_2 \otimes \frac{1}{\sqrt{2}}|-\rangle_3$
+    \item $|\psi_3\rangle = (H^{\otimes2} \otimes I)|\psi_2\rangle = \frac{1}{2\sqrt{8}}\begin{bmatrix}0&0&0&0&0&0&4&-4\end{bmatrix}^T$. Or, $|\psi_3\rangle = |1\rangle_1 \otimes |1\rangle_2 \otimes |-\rangle_3$
+    \item Measuring the first two qubits gives us the result of 11 which indicates that the oracle function is balanced.
+    \item An oracle for a constant function where $f(x) = 0$: $$\Qcircuit @C=1.5em @R=1.2em {
+    & \lstick{1} & \qw & \qw \\
+    & \lstick{2} & \qw & \qw \\
+    & \lstick{3} & \gate{X} & \qw }$$ and a function where $f(x) = 1$: $$\Qcircuit @C=1.5em @R=1.2em {
+    & \lstick{1} & \gate{X} & \qw \\
+    & \lstick{2} & \gate{X} & \qw \\
+    & \lstick{3} & \qw & \qw }$$
+\end{enumerate}
+\end{solution}
+
+\newpage
+
+\noindent 2. [The Bernstein-Vazirani Algorithm] (/40)
+\\
+We are again given a black-box function $f$, which takes as input a string of bits $(x)$, and returns either 0 or 1, that is: $$f(\{x_0,x_1,x_2,...\})\xrightarrow{} \text{0 or 1,\hspace{2em} where } x_n \text{ is 0 or 1}$$
+Instead of the function being balanced or constant as in the Deutsch-Josza problem, now the function is guaranteed to return the bitwise product of the input with some string, $s$. In other words, given an input $x, f(x) = s\cdot x \text{mod 2}$. We are expected to find $s$. As a classical reversible circuit, the Bernstein-Vazirani oracle looks like this: 
+$$\Qcircuit @C=1.5em @R=1em {
+    & \lstick{} & \multigate{3}{f} & \qw \\
+    & \lstick{x} & \ghost{f} & \qw & \rstick{x} \\
+    & \lstick{} & \ghost{f} & \qw \\
+    & \lstick{} & \ghost{f}\ctrlo{1} & \qw \\
+    & \lstick{0} & \targ & \qw & \rstick{s \cdot x \text{ mod } 2} }$$
+Classically, the oracle returns: $$f_s(x) = s \cdot x \text{ mod } 2$$
+given an input x. Thus, the hidden bit string s can be revealed by querying the oracle with the sequence of inputs: $100...0, 010...0, 001...0$, and so on, until $000...1$.
+\begin{enumerate}[(a)]
+    \item What does each query reveal, and how many queries would we need to use in order to reveal $s$ in totality?
+\listpart{Using a quantum computer, we can solve this problem with 100\% confidence after only one call to the function $f(x)$. The quantum Bernstein-Vazirani algorithm to find the hidden bit string is very simple: }
+\begin{enumerate}[1.]
+    \item Initialise the inputs qubits to the $|0\rangle^{\otimes n}$ state, and the output to $|-\rangle$.
+    \item Apply Hadamard gates to the input register
+    \item Query the oracle
+    \item Apply Hadamard gates to the input register
+    \item Measure
+\end{enumerate}
+\listpart{To explain the algorithm, let's look more closely at what happens when we apply a $H$-gate to each qubit. If we have an $n$-qubit state, $|a\rangle$, and apply the H-gates, we will see the transformation: 
+$$|a\rangle \xrightarrow{H^{\otimes n}}\frac{1}{\sqrt{2^n}}\sum_{x\in \{0,1\}^n}(-1)^{a\cdot x}|x\rangle $$}
+    \item Show explicitly that this summation formula works for the case of two qubits by writing out the terms. To do this, apply a Hadamard to each of the four computational basis states, and show that the result is consistent with what you get from the summation expression.
+\listpart{In particular, when we start with a quantum register $|00...0\rangle$ and apply $n$ Hadamard gates to it, we have the familiar quantum superposition: $$|0...0\rangle\xrightarrow{H^{\otimes n}}\frac{1}{\sqrt{2^n}}\sum_{x\in \{0,1\}^n}|x\rangle$$ In this case, the phase term $(-1)^{a\cdot x}$ disappears, since $a = 0$, and thus $(-1)^{a\cdot x} = 1$.}
+\listpart{The classical oracle $f_s$ returns 1 for any input $x$ such that $s\cdot x$ mod $2 = 1$, and returns 0 otherwise. If we use the same phase kickback trick from the Deutsch-Jozsa algorithm and act on a qubit in the state $|-\rangle$ we get the following transformation: $$|x\rangle\xrightarrow{f_s}(-1)^{a\cdot x}|x\rangle$$}
+\listpart{The algorithm to reveal the hidden bit string follows naturally by querying the quantum oracle $f_s$ with the quantum superposition obtained from the Hadamard transformation of $|00...0\rangle$. Namely $$|0...0\rangle\xrightarrow{H^{\otimes n}}\frac{1}{\sqrt{2^n}}\sum_{x\in \{0,1\}^n}|x\rangle \xrightarrow{f_a}\frac{1}{\sqrt{2^n}}\sum_{x\in \{0,1\}^n}(-1)^{a\cdot x}|x\rangle$$}
+\listpart{Because the inverse of the $n$-Hadamard gate is again the $n$-Hadamard gate, we can obtain $a$ by $$\frac{1}{\sqrt{2^n}}\sum_{x\in \{0,1\}^n}(-1)^{a\cdot x}|x\rangle \xrightarrow{H^{\otimes n}}|a\rangle$$}
+\listpart{We are now going to ask you to apply this algorithm to a specific example for $n = 2$ qubits and a secret string $s = 11$ to demonstrate that you know how it works. Begin by initializing the two qubits to zero: $$|\psi_0\rangle = |00\rangle$$}
+    \item Find $|\psi_1\rangle$, the state resulting from applying a Hadamard to both qubits.
+    \item For the secret string $s = 11$, find the state $|\psi_2\rangle$ that results from the operation of the oracle.
+    \item Continuing with the algorithm, find $|\psi_3\rangle$ that results from the application of a Hadamard gate to both qubits.
+    \item Show in detail how to perform a quantum measurement to reveal the original secret string $s = 11$.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item Each query reveals a different bit of $s$, and we need $n$ queries to reveal $s$ in totality.
+    \item $H^{\otimes 2}|a\rangle = \frac{1}{2}\sum_{x\in \{0,1\}}(-1)^{a\cdot x}|x\rangle $, so for each of the four computational basis states we get 
+          $$ H^{\otimes 2}|00\rangle = \frac{1}{2}(|00\rangle+|01\rangle+|10\rangle+|11\rangle),$$
+          $$ H^{\otimes 2}|01\rangle = \frac{1}{2}(|00\rangle-|01\rangle+|10\rangle-|11\rangle),$$
+          $$ H^{\otimes 2}|10\rangle = \frac{1}{2}(|00\rangle+|01\rangle-|10\rangle-|11\rangle),$$
+          $$ H^{\otimes 2}|11\rangle = \frac{1}{2}(|00\rangle-|01\rangle-|10\rangle+|11\rangle).$$
+    \item $|\psi_1\rangle = \frac{1}{2}(|00\rangle+|01\rangle+|10\rangle+|11\rangle)$
+    \item $|\psi_2\rangle = \frac{1}{2}(|00\rangle-|01\rangle-|10\rangle+|11\rangle)$
+    \item $|\psi_3\rangle = |11\rangle$
+    \item To perform a quantum measurement, we can rewrite $|\psi_3\rangle = |11\rangle$ as $\begin{bmatrix}0&0&0&1\end{bmatrix}^T$ and observe that measuring this state yields 00, 01, and 10 with probability $|0|^2 = 0$, and 11 with probability $|1|^2 = 1$.
+\end{enumerate}
+\end{solution}
+
+\vspace{3em}
+
+\noindent 3. [Induction proof for Bernstein-Vazirani] (/30)
+\\
+Let a and y be n-bit strings. In this problem you will prove the following identity that was
+discussed in class and is used in analysing the Bernstein-Vazirani algorithm:
+$$\sum_{x\in\{0,1\}^n}(-1)^{(a\oplus y)\cdot x} = \prod_{j=0}^{n-1}\sum_{x_j=0}^1 (-1)^{(a_j\oplus y_j) x_j}$$
+
+\begin{enumerate}[(a)] 
+\item Show the identity is true for $n=1$.
+\item Show the identity is true for $n=2$.
+\item Assume the identity is true for some fixed $n$. Use this to show the identity is also true for $n + 1$. Together with Part (a), this shows by induction that the identity is true for all $n$.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item For $n=1$, we have \begin{align*}
+        \sum_{x\in\{0,1\}}(-1)^{(a\oplus y)\cdot x} &= \prod_{j=0}^{0}\sum_{x_j=0}^1 (-1)^{(a_j\oplus y_j) x_j} \\
+        &= \sum_{x_j=0}^1 (-1)^{(a_j\oplus y_j) x_j}
+    \end{align*} which holds true.
+    \item For $n=2$, we have \begin{align*}
+        \sum_{x\in\{0,1\}^2}(-1)^{(a\oplus y)\cdot x} &= \prod_{j=0}^{1}\sum_{x_j=0}^1 (-1)^{(a_j\oplus y_j) x_j} \\
+        &= \sum_{x_0=0}^1 (-1)^{(a_0\oplus y_0) x_0}\cdot\sum_{x_1=0}^1 (-1)^{(a_1\oplus y_1) x_1} \\
+        &= \sum_{x\in\{0,1\}} (-1)^{(a_0\oplus y_0) x_0 + (a_1\oplus y_1) x_1} \\
+        &= \sum_{x\in\{0,1\}^2}(-1)^{(a\oplus y)\cdot x}
+    \end{align*} so this holds true.
+    \item Now assume the identity is true for some fixed $n$. We show this identity also holds for $n+1$, \begin{align*}
+        \sum_{x\in\{0,1\}^{n+1}}(-1)^{(a\oplus y)\cdot x} &= \prod_{j=0}^{n}\sum_{x_j=0}^1 (-1)^{(a_j\oplus y_j) x_j} \\
+        &= \left(\sum_{x_0=0}^1 (-1)^{(a_0\oplus y_0) x_0}\right)\cdots\left(\sum_{x_n=0}^1 (-1)^{(a_n\oplus y_n) x_n}\right) \\
+        &= \sum_{x\in\{0,1\}^{n+1}}(-1)^{(a\oplus y)\cdot x}
+    \end{align*} which is true since $(a_0\oplus y_0)x_0 + ... +(a_n\oplus y_n)x_n = (a\oplus y)x$. \vspace{3em} \\ 
+    Note: Complete proof of Bernstein-Vazirani covered in lecture 18.
+\end{enumerate}
+\end{solution}
+
+ \end{document}
