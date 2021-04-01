@@ -1,0 +1,93 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx, amsmath, amssymb, amsthm, mdframed, enumerate, tikz, tensor, qcircuit}
+\newenvironment{solution}{\begin{mdframed}[skipabove=\baselineskip,innertopmargin=\baselineskip,innerbottommargin=\baselineskip]
+  %\ignorespaces
+  }{\end{mdframed}}
+
+\begin{document}
+%http://physics.unm.edu/CQuIC/Qcircuit/Qtutorial.pdf
+%\author{Drishan Sarkar}
+\date{}
+\title{CSCI-PHYS 3090 -- Quantum Computing\\ Problem Set \#5 \\  Due: Wednesday, March 3, at 11am}
+\maketitle
+
+ 
+\noindent 1. [Entanglement swapping and the GHZ basis] (/30)
+\\
+Consider three local qubits $A, B, C$ and three very distant qubits $A', B', C'$, where the distant qubits have been spread far apart to the corners of the galaxy. Suppose we have previously prepared three maximally entangled pairs between $AA',BB',$ and $CC'$, i.e.,
+$$\frac{1}{2^{3/2}}(|00\rangle_{AA'}+|11\rangle_{AA'})\otimes(|00\rangle_{BB'}+|11\rangle_{BB'})\otimes(|00\rangle_{CC'}+|11\rangle_{CC'})$$
+
+\begin{enumerate}[(a)]
+    \item Consider what happens if we do a local measurement (i.e., on the ABC qubits) in the computational basis, and we realize the specific measurement result $|000\rangle_{ABC}$. Write down what the resulting state of the distant qubits (i.e., $A'B'C'$)? Is this state
+entangled?
+    \item Now consider what happens if we do a local measurement (i.e., on the ABC qubits) in the GHZ basis? The GHZ basis is a generalization of the state we used for the GHZ puzzle in class. It consists of the 8 states 
+    $$ \begin{array}{c}
+        \frac{1}{\sqrt{2}}(|000\rangle_{ABC} + |111\rangle_{ABC})  \\
+        \frac{1}{\sqrt{2}}(|000\rangle_{ABC} - |111\rangle_{ABC})  \\
+        \frac{1}{\sqrt{2}}(|001\rangle_{ABC} + |110\rangle_{ABC})  \\
+        \frac{1}{\sqrt{2}}(|001\rangle_{ABC} - |110\rangle_{ABC})  \\
+        \frac{1}{\sqrt{2}}(|010\rangle_{ABC} + |101\rangle_{ABC})  \\
+        \frac{1}{\sqrt{2}}(|010\rangle_{ABC} - |101\rangle_{ABC})  \\
+        \frac{1}{\sqrt{2}}(|100\rangle_{ABC} + |011\rangle_{ABC})  \\
+        \frac{1}{\sqrt{2}}(|100\rangle_{ABC} - |011\rangle_{ABC})  \\
+    \end{array} $$
+    Again determine what is the resulting state is of the distant qubits (i.e., $A'B'C'$)? Is this state entangled?
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item The resulting state of $A'B'C'$ is $\frac{|0\rangle+|1\rangle}{\sqrt{2}}$? which is entangled.
+    \item The resulting state is entangled.
+\end{enumerate}
+\end{solution}
+
+\vspace{3em}
+
+\noindent 2. [Counting] (/30)
+\\
+An $n$-to-$1$ bit function $f$ is said to be constant if either $f(x) = 0$ for all $x$ or $f(x) = 1$ for all $x$. The function $f$ is said to be balanced if $f(x) = 0$ for $2^{n-1}$ values of $x$ and $f(x) = 1$ for the other $2^{n-1}$values.
+
+\begin{enumerate}[(a)]
+\item For $n = 2$, how many functions from 2 bits to 1 bit are constant? How many are balanced?
+\item Repeat (a), but for $n = 4$
+\item How many functions $f : \{0,1,...,q\}^n \rightarrow \{0,1,...,q\}$ are there? How many of them are constant?
+\item How many one-to-one functions are there from a set with $m$ elements to a set with $n$ elements? (A function $f$ is one-to-one if no two elements in the domain of $f$ correspond to the same element in the range of $f$.)
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item 2 constant, $2^{2^2}-2 = 14$ balanced
+    \item 2 constant, $2^{2^4}-2 = 65534$ balanced
+    \item $q^{q^n}$ functions, $q$ are constant
+    \item $\frac{n!}{(n-m)!}$
+\end{enumerate}
+\end{solution}
+
+\vspace{3em}
+
+\noindent 3. [Deutsch's problem, revisited] (/40)
+\\
+In this question, we will repeat Deutsch's algorithm for functions $f : \{0,1\}^2 \rightarrow \{0,1\}$. We are given a black box circuit $U_f$, and we are guaranteed that it either computes one of the possible constant functions or it computes one of the possible balanced functions. Our goal is to determine, with one application of $U_f$, whether our function is constant or balanced. Our algorithm performs the following circuit, where the first two qubits are the input register and the last qubit is the output register:
+$$(H\otimes H\otimes I)U_f(H\otimes H\otimes H)|0\rangle|0\rangle|1\rangle$$
+
+\begin{enumerate}[(a)] 
+\item As a warm-up, first consider the simpler 2-qubit case. That is, $(H\otimes I)U_f(H\otimes H)|0\rangle|1\rangle$. This was analyzed in class, except the starting registers here are $|0\rangle|1\rangle$ and not $|1\rangle|1\rangle$. Determine a strategy to reveal whether the encoded function is constant or balanced.
+\item Draw a schematic representation of the 3-qubit circuit using our standard symbols.
+\item What is the final state of the circuit for the 3-qubit case?
+\item Assume you prepare the two input register qubits in the computational basis. Devise a strategy for the 3-qubit case for how to use the results of a final measurement on the 2 top-register qubits to determine whether the encoded function is constant or balanced.
+\item Demonstrate that your strategy for 3-qubits works for two specific choices of 2-to-1 bit functions, one constant, one balanced.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item Strategy: measure the first qubit of the output from the circuit, $(-1)^{f(x)}|x\rangle\otimes\frac{|0\rangle + |1\rangle}{\sqrt{2}} $. If the result is 0 then the function is constant. If it is 1 then the function is balanced.
+    \item $\hspace{1em} \Qcircuit @C=1.5em @R=1.2em {
+    & \lstick{|0\rangle} & \gate{H} & \multigate{2}{U_f} & \gate{H} & \qw \\
+    & \lstick{|0\rangle} & \gate{H} & \ghost{U_f} & \gate{H} & \qw \\
+    & \lstick{|1\rangle} & \gate{H} & \ghost{U_f} & \qw & \qw \\ }$
+    \item $\frac{1}{2^{3/2}}(|-\rangle\otimes|-\rangle\otimes|-\rangle)$
+    \item Strategy: measure the 2 top-register qubits and if the result is $|01\rangle + |10\rangle$ the function is balanced. If the result is $|11\rangle+|00\rangle$ it is constant.
+\end{enumerate}
+\end{solution}
+
+ \end{document}
