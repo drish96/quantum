@@ -1,0 +1,92 @@
+\documentclass[11pt]{article}
+\usepackage{graphicx, amsmath, amssymb, amsthm, mdframed, enumerate, tikz, tensor, qcircuit, expdlist}
+\newenvironment{solution}{\begin{mdframed}[skipabove=\baselineskip,innertopmargin=\baselineskip,innerbottommargin=\baselineskip]
+  %\ignorespaces
+  }{\end{mdframed}}
+
+\begin{document}
+\date{}
+\author{Drishan Sarkar}
+\title{CSCI-PHYS 3090 -- Quantum Computing\\ Problem Set \#7 \\  Due: Wednesday, March 17, at 11am}
+\maketitle
+
+ 
+\noindent 1. [Coin Flips] (/30)
+\\
+Assume I am flipping a biased coin, with probability of coming up heads $q\in[0,1]$, and probability of coming up tails $p=1-q$. Assume I flip my coin some $k\geq3$ times. Let $H$ and $T$ be the random variable that represents the number of heads and tails in those $k$ flips, respectively.
+
+\begin{enumerate}[(a)]
+    \item What is the probability that we flip heads twice, $p(H = 2)$? What is the $p(T = 3)$?
+[Hint: both answers should depend on k]
+    \item What is the expected value of $H, E[H]$? What is $E[T]$? [Hint: try to generalize (a) to get $p(H = i)$ and $p(T = j)$ and use this to calculate the expectation $\sum_i i\cdot p(H = i)$.]
+    \listpart{Now I perform an experiment where I keep flipping my coin, and only stop when I get the first ``heads''. Let $X$ be the random variable of the number of times the coin came up ``tails'' before the first ``head''.}
+    \item For any $k$, what is the probability $Pr[X = k]$? [Hint: how many coin flips total does this involve?]
+    \item What is the expected value of $X, E[X]$?
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item $p(H = 2) = {k \choose 2} q^2 p^{k-2}$ \hspace{3em} $p(T = 3) = {k \choose 3} p^3 q^{k-3}$
+    \item $E[H] = \sum_i i\cdot{k \choose i} q^i p^{k-i}$ \hspace{3em} $E[T] = \sum_i i\cdot{k \choose i} p^i q^{k-i}$
+    \item $Pr[X = k] = p^{k}$
+    \item $E[X] = \sum_i i \cdot p^k$
+\end{enumerate}
+\end{solution}
+
+\vspace{3em}
+
+\noindent 2. [Linear Independence and Bases] (/40)
+
+\begin{enumerate}[(a)]
+\item Find a basis for the set of vectors in $\mathbb{R}^2$ on the line $y=3x$.
+\item Find a basis for the set of vectors in $\mathbb{R}^3$ on the plane $x+3y+z=0$.
+\listpart{For the next two parts, let $V$ and $W$ be vector spaces, let $T:V\xrightarrow{}W$ be a linear transformation, and let $\{v_1,...,v_p\}$ be a subset of $V$.}
+\item Show that if $\{T(v_1),...,T(v_p)\}$ is linearly independent in $W$ then $\{v_1,...,v_p\}$ is linearly independent in $V$. If $\{v_1,...,v_p\}$ is linearly independent in $V$, then what does this result imply about $\{T(v_1),...,T(v_p)\}$?
+\item Suppose that $T$ is a one-to-one transformation, so that an equation $T(u)=T(v)$ always implies $u=v$. Show that if $\{v_1,...,v_p\}$ is linearly independent in $V$, then the set of images $\{T(v_1),...,T(v_p)\}$ is linearly independent in $W$.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item $\left\{ 
+    \begin{bmatrix}
+    1 \\ 3
+    \end{bmatrix}
+    \right\}$
+    \item $\left\{ 
+    \begin{bmatrix}
+    -3 \\ 1 \\ 0
+    \end{bmatrix}, \begin{bmatrix}
+    -1 \\ 0 \\ 1
+    \end{bmatrix}
+    \right\}$
+    \item Since $T$ is linear, we know that $\sum_i^p \alpha_i T(v_i) = T\sum_i^p \alpha_i (v_i)$. If $\{T(v_1),...,T(v_p)\}$ is linearly independent in $W$ then we must have $\alpha_i = 0$ which proves the linear independence of $\{v_1,...,v_p\}$ in $V$. Now $\{v_1,...,v_p\}$ is linearly independent in $V$, so we have $\sum_i^p \alpha_iv_i = 0$ only if $a_i = 0 $ for all $i$, which implies $\{T(v_1),...,T(v_p)\}$ is also linearly independent.
+    \listpart{By definition: \\ 
+    \hspace{3em} Not linearly dependent $\implies$ linearly independent \\ \hspace{3em} Not linearly independent $\implies$ linearly dependent}
+    \item Suppose $\{T(v_1),...,T(v_p)\}$ is linearly dependent, then there exists some nonzero $\alpha_i$ such that $\sum_i^p \alpha_i T(v_i) = 0$. However, $\sum_i^p \alpha_i T(v_i) = T\sum_i^p \alpha_i (v_i)$ and since $T$ is one-to-one, the pre-image of 0 is unique so $\sum_i^p \alpha_i v_i = 0$ for the same $\alpha_i$. Thus, $\{v_1,...,v_p\}$ must be linearly dependent. By contrapositive, if $\{v_1,...,v_p\}$ is linearly independent then the set of images $\{T(v_1),...,T(v_p)\}$ is linearly independent. \\
+    
+\end{enumerate}
+\end{solution}
+
+\vspace{3em}
+
+\noindent 3. [Running Simon's Problem] (/30)
+\\
+For this question, we will be dealing with Simon’s problem for $n= 5$.  Assume that, after 4 runs of the algorithm, the measurements we got from the input register were $y(1)=  (1,1,1,1,0), y(2)=  (1,0,0,1,0), y(3)=  (1,0,1,1,1), \text{ and } y(4)=  (1,1,0,1,1)$.
+\begin{enumerate}[(a)] 
+\item Can we determine the hidden period $a$ at this point?  If so, what is $a$?  If not, explain.
+\item What if we run the algorithm one more time and get $y(5)=  (0,1,0,0,0)$,  Can we determine $a$ now?  If so, what is $a$?  If not, explain.
+\item Run Simon's algorithm one more time for a two-to-one function $f:\{0,1\}^3\xrightarrow{}\{0,1\}^2$, with hidden period $a=(1,1,0)$.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item No, since the system of linear equations we have at this point is underdetermined: 4 equations and 5 unknowns.
+    \item Yes, $a = (1,0,0,1,0)$.
+    \item Let $a = (s_1,s_2,s_3) = (1,1,0)$ and our measurement results be $y(1) = (0,0,1)$ and $y(2) = (1,1,1)$. For $y(1)$ we have $(s_3\cdot 1) = 0 \implies s_3 = 0$. For $y(2)$ we have $(s_1\cdot 1) + (s_2\cdot 1) = 0 \implies s_1 = s_2 = 0$ or $s_1 = s_2 = 1$. Solving this system gives us the hidden period $a$. 
+\end{enumerate}
+\end{solution}
+
+\includegraphics[width=0.9\textwidth]{hw7-3b.jpg} \\ Work for problem 3 part b
+ 
+ 
+ \end{document}
