@@ -1,0 +1,124 @@
+% % % % % % % % % % % % % % % % % % % % % % %
+%  Problem Set 8                            %
+% % % % % % % % % % % % % % % % % % % % % % % 
+
+\documentclass[11pt]{article}
+% import packages
+\usepackage{ graphicx, 
+              amsmath, 
+              amssymb, 
+              amsthm, 
+              enumerate, 
+              expdlist, 
+              mdframed, 
+              tikz, 
+              tensor, 
+              qcircuit }
+% the solution box
+\newenvironment{solution}{\begin{mdframed}[skipabove=\baselineskip,innertopmargin=\baselineskip,innerbottommargin=\baselineskip]
+  }{\end{mdframed}}
+ 
+% begin doc
+\begin{document}
+\date{}
+\author{Drishan Sarkar}
+\title{CSCI-PHYS 3090 -- Quantum Computing \\ Problem Set \#8 \\ Due: Wednesday, April 7, at 11am}
+\maketitle
+
+\noindent 1. [Discrete Fourier Transform] (/40)
+
+\begin{enumerate}[(a)]
+    \item The $N$-th roots of unity are defined as solutions to the equation: $\omega^N=1$. There are exactly $N$ distinct $N$-th roots of unity. \\ Let $\omega$ be a primitive root of unity, for example $\omega=e^{2\pi i/N}$. Show the following: 
+    \[
+	\sum_{k=0}^{N-1}\omega^{mk} = 
+	\begin{cases} 
+	N, & \text{ if N divides } m\\
+	0, & \text{ otherwise. } 
+	\end{cases} 
+	\]
+    \item For integer $N\geq 2$ let
+    $$f \equiv \begin{pmatrix}f(0)\\f(1)\\\vdots\\f(N-1)\end{pmatrix} $$
+    be a vector function $f : [N]\rightarrow C$. The Discrete Fourier Transform of $f$ is another complex vector function $F : [N]\rightarrow C$ given by 
+    $$F \equiv \begin{pmatrix}f(0)\\f(1)\\\vdots\\f(N-1)\end{pmatrix} $$
+    of the same dimension $N$, with 
+    $$F(k)=\sum_n\omega^{kn}f(n)$$
+    Thus, Fourier transform is a linear operator represented by the $N\times N$ matrix $A=(a_{kn})$ with $a_{kn}=\omega^{kn}$.
+    \begin{enumerate}[(i)]
+        \item Write explicitly the Fourier matrix of order 4 using $\omega=e^{2\pi i/4}=i$.
+        \item Find the Fourier Transform of the vector $$\begin{pmatrix}2\\1\\-2\\1\end{pmatrix}$$ using the Fourier matrix from (i).
+        \item Using Part (a), verify that the inverse matrix is $$A^{-1}=\frac{1}{N}(\omega^{-kn})$$
+        In other words, a vector $f$ can be recovered from its Fourier Transform $F$ by the Fourier Inversion Formula: $$f(n)=\frac{1}{N}\sum_k\omega^{-nk}F(k)$$
+    \end{enumerate}
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item
+    \item \begin{enumerate}[(i)]
+        \item
+        \item
+        \item
+    \end{enumerate}
+\end{enumerate}
+\end{solution}
+
+\newpage
+
+\noindent 2. [Number theory basics] (/30)
+
+\begin{enumerate}[(a)]
+\item Suppose $a$ and $t$ are integers, $s$ and $m$ are positive integers, and that $$as+mt\equiv2(\text{mod }m)$$
+Which of the following necessarily must be true?
+    \begin{enumerate}[(i)]
+    \item $as \equiv 1 (\text{mod }m)$ 
+    \item $as \equiv 2 (\text{mod }m)$ 
+    \item $as=1$
+    \item $as+mt=0$
+    \end{enumerate}
+\item Fermat's little theorem states that if $p$ is a prime number, then for any integer $a$, $a^p\equiv a(\text{mod }p)$.
+    \begin{enumerate}[(i)]
+    \item Show that if $p$ does not divide $a$, then $a^{p-1}\equiv 1(\text{mod }p)$
+    \item What is $5^{3600000000000002}$ (mod 7)?
+    \end{enumerate}
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+\item 
+\item 
+    \begin{enumerate}[(i)]
+    \item 
+    \item 
+    \end{enumerate}
+\end{enumerate}
+\end{solution}
+
+\newpage
+
+\noindent 3. [Period finding with an offset] (/30)
+\noindent In what follows, we are working in a field of size $N$, and we let $\omega = e^{2\pi i/N}$ be a primitive $N$-th root of unity.
+\begin{enumerate}[(a)]
+    \item Suppose we shift a superposition 
+    $$|a \rangle= \sum_j a_j |j  \rangle$$
+    by $l$ to get the superposition 
+    $$|a'\rangle= \sum_j a_j |j+l\rangle$$
+    If the QFT of $|a\rangle$ is 
+    $$|b \rangle= \sum_j b_j |j  \rangle$$
+    show that the QFT of $|a'\rangle$ is 
+    $$|b'\rangle= \sum_j b'_j |j  \rangle$$
+    where $b'_j=b_j\omega^{lj}$.
+    \item Conclude that our period finding algorithm works with an offset $x_0:$ i.e., if 
+    $$|a'\rangle=\sum_{j=0}^{N/r-1}\sqrt{\frac{r}{N}}|jr+x_0\rangle$$ 
+    then
+    $$|b'\rangle=\frac{1}{\sqrt{r}}\sum_{j=0}^{r-1}\omega^{x_0jN/r}|jN/r\rangle$$ 
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item
+    \item
+\end{enumerate}
+\end{solution}
+
+% end doc
+\end{document}
