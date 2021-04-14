@@ -1,0 +1,136 @@
+% % % % % % % % % % % % % % % % % % % % % % %
+%  Problem Set 9                            %
+% % % % % % % % % % % % % % % % % % % % % % % 
+
+\documentclass[11pt]{article}
+% import packages
+\usepackage{ graphicx, 
+              amsmath, 
+              amssymb, 
+              amsthm, 
+              enumerate, 
+              expdlist, 
+              mdframed, 
+              tikz, 
+              tensor, 
+              qcircuit }
+% the solution box
+\newenvironment{solution}{\begin{mdframed}[skipabove=\baselineskip,innertopmargin=\baselineskip,innerbottommargin=\baselineskip]
+  }{\end{mdframed}}
+ 
+% begin doc
+\begin{document}
+\date{}
+\author{Drishan Sarkar}
+\title{CSCI-PHYS 3090 -- Quantum Computing \\ Problem Set \#9 \\ Due: Wednesday, April 14, at 11am}
+\maketitle
+
+\noindent 1. [Practice with the quantum Fourier Transform] (/30)
+\\
+In this question we will work through an example of the quantum Fourier transform (i.e.,$QFT_N$) for $N = 6$.
+
+\begin{enumerate}[(i)]
+    \item What is $\omega$? Simplify trig functions if possible.
+    \item What is the $QFT_N$ of $\frac{1}{\sqrt{2}}(|0\rangle +|3\rangle)$?
+    \item What is the $QFT_N$ of $\frac{1}{\sqrt{2}}(|0\rangle +|4\rangle)$?
+    \item What is the $QFT_N$ of $\frac{1}{\sqrt{3}}(|0\rangle +|2\rangle+|4\rangle)$?
+    \item What is the $QFT_N$ of $\frac{1}{\sqrt{3}}(|1\rangle +|3\rangle+|5\rangle)$?
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(i)]
+    \item $\omega = e^{\frac{2\pi i}{6}} = \text{cos}(\frac{\pi}{3}) + i \text{ sin}(\frac{\pi}{3})$
+    \listpart{Let $F_N = \frac{1}{\sqrt{6}}\begin{bmatrix} 
+    1 & 1 & 1 & 1 & 1 & 1 \\
+    1 & \omega & i & i\omega & -1 & -\omega \\
+    1 & i & -1 & -i & 1 & i \\
+    1 & i\omega & -i & \omega & -1 & -i\omega \\
+    1 & -1 & 1 & -1 & 1 & -1 \\
+    1 & -\omega & i & -i\omega & -1 & \omega 
+    \end{bmatrix}$.}
+    
+    \item $F_N \cdot \frac{1}{\sqrt{2}}(|0\rangle +|3\rangle) = F_N \cdot 
+    \frac{1}{\sqrt{2}}\begin{bmatrix} 1 & 0 & 0 & 1 & 0 & 0 \end{bmatrix}^T$ \\
+    $= \frac{1}{\sqrt{12}}
+    \begin{bmatrix} 2 \\ 1+i\omega \\ 1-i \\ 1+\omega \\ 0 \\ 1-i\omega \end{bmatrix}$
+    
+    \item $F_N \cdot \frac{1}{\sqrt{2}}(|0\rangle +|4\rangle) = F_N \cdot 
+    \frac{1}{\sqrt{2}}\begin{bmatrix} 1 & 0 & 0 & 0 & 1 & 0 \end{bmatrix}^T$\\
+    $= \frac{1}{\sqrt{12}}
+    \begin{bmatrix} 2 \\ 0 \\ 2 \\ 0 \\ 2 \\ 0 \end{bmatrix}$
+    
+    \item $F_N \cdot \frac{1}{\sqrt{2}}(|0\rangle +|2\rangle+|4\rangle) = F_N \cdot 
+    \frac{1}{\sqrt{3}}\begin{bmatrix} 1 & 0 & 1 & 0 & 1 & 0 \end{bmatrix}^T$\\
+    $= \frac{1}{\sqrt{18}}
+    \begin{bmatrix} 3 \\ i \\ 1 \\ -i \\ 3 \\ i \end{bmatrix}$
+    
+    \item $F_N \cdot \frac{1}{\sqrt{2}}(|1\rangle +|3\rangle+|5\rangle) = F_N \cdot 
+    \frac{1}{\sqrt{3}}\begin{bmatrix} 0 & 1 & 0 & 1 & 0 & 1 \end{bmatrix}^T$\\
+    $= \frac{1}{\sqrt{18}}
+    \begin{bmatrix} 3 \\ i\omega \\ i \\ \omega \\ -3 \\ -i\omega \end{bmatrix}$
+\end{enumerate}
+\end{solution}
+
+\newpage
+
+\noindent 2. [Implementing the Hadamard transform with an offset] (/30)
+\\
+For a general superposition state
+$$|a\rangle = \sum a_x|x\rangle$$
+let
+$$|b\rangle := H^{\otimes n}|a\rangle = \sum b_x|x\rangle$$
+be the Hadamard transform of $|a\rangle$. \\
+Consider the ‘shift’ by $u$ of the superposition $|a\rangle$, i.e.,
+$$|a'\rangle = \sum a_x|x\oplus u\rangle$$
+where $x\oplus u$ means bitwise sum modulo 2, and its Hadamard transform is
+$$|b'\rangle = \sum b'_x|x\rangle$$
+Describe $b'_x$ as a function of $b_x,x$ and $u$. \\ \vspace{2em} \\
+%\textit{[Hint:  First, calculate $b_x$ by applying $H^{\otimes n}$ to $|a\rangle$. Then apply $H^{\otimes n}$ to $|a'\rangle$ and rearrange.]}
+
+\begin{solution}
+$H^{\otimes n}|a\rangle = \frac{1}{2^{n/2}}\sum_x e^{\pi i a\cdot x}|x\rangle$, so $b_x = \frac{1}{2^{n/2}}e^{\pi i a\cdot x}$. \vspace{2em} \\
+$H^{\otimes n}|a'\rangle = \sum_x b_x|x \oplus u\rangle$ and after rearranging, $b'_x = b_x^{(x+u)}$. \\
+
+\end{solution}
+
+\newpage
+
+\noindent 3. [Implementing the QFT with an offset] (/20)
+\\
+Let
+$$|a\rangle = \frac{1}{\sqrt{M}}\sum a_x|x\rangle$$
+be a state and
+$$|b\rangle := QFT_N|a\rangle = \frac{1}{\sqrt{M}}\sum b_x|x\rangle$$
+be its QFT. Consider the ‘shift’ by 1 of the superposition $|a\rangle$, i.e.,
+$$|a'\rangle = \frac{1}{\sqrt{M}}\sum a'_x|x+1\text{ mod }M\rangle$$
+and its Quantum Fourier transform
+$$|b'\rangle = \sum b'_x|x\rangle.$$
+Describe $|b'\rangle$ as a function of $|b\rangle$. % [Hint:  Follow the same hint from Problem 2, replacing $H\otimes n$ with $QFT_N$ and this new $|a'\rangle$.]
+
+\begin{solution}
+$|b\rangle = \frac{1}{\sqrt{M}}\sum a_x QFT_N|x\rangle = \frac{1}{\sqrt{M}}\sum_x a_x \sum_y\omega^{xy}|y\rangle = \frac{1}{\sqrt{M}}\sum_x \sum_y a_x \omega^{xy}|y\rangle$, and $b_y = \sum_y a_x \omega^{xy}$. \\\vspace{2em} \\ 
+Now, $|b'\rangle =  \frac{1}{\sqrt{M}}\sum_x a'_x QFT_N|x+1\rangle = \frac{1}{\sqrt{M}}\sum_x a'_x  \sum_y \omega^{y(x+1)}|y\rangle$, which simplifies to $\frac{1}{\sqrt{M}}\sum_y \omega^y \sum_x a'_x  \omega^{yx}|y\rangle = \frac{1}{\sqrt{M}}\sum_x \omega^y b_y|y\rangle$. So, $|b'\rangle = \sum_x \omega^x |b\rangle$
+\end{solution}
+
+\newpage
+
+\noindent 4. [Number Theory Practice] (/20)
+
+\begin{enumerate}[(i)] 
+\item Compute $10^n \text{ mod } 11$ for $n\in Z$. %[Hint:  Given integers $a, b$, how can you rewrite $a^n - b^n \textit{ mod } 11$?  Also recall that $a\equiv b \textit{ mod } 11$ iff $a-b\equiv 0 \textit{mod} 11$.]
+\item Prove that any 4-digit palindromic number is divisible by 11. %[Hint:  If ABCD is a palindromic number, what do we know about D with respect to A (respectively, C with respect to B)? Use (a), that is, rewrite the integer ABCD using powers of 10.]
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(i)]
+    \item $	10^n  \text{ mod } 11 = 
+    	\begin{cases} 
+    	1, & \text{ if $n$ is even }\\
+    	10, & \text{ if $n$ is odd. } 
+    	\end{cases} $
+    \item Let $ABCD$ be a 4-digit palindromic number. We know $A=10^3D$ and $B=10^1C$, so we can rewrite $ABCD$ as $10^3D+D+10^2C+10C$ which simplifies to $1001D+110C$. Now we can factor the coefficients, $1001 = (7)(11)(13)$ and $110 = (2)(5)(11)$. Thus, $ABCD = 11(2\cdot5C + 7\cdot13D)$ which proves any 4-digit palindromic number is divisible by 11.
+\end{enumerate}
+\end{solution}
+
+% end doc
+\end{document}
