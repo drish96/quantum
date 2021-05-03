@@ -39,35 +39,28 @@ In this question we will work through an example of the quantum Fourier transfor
 
 \begin{solution}
 \begin{enumerate}[(i)]
-    \item $\omega = e^{\frac{2\pi i}{6}} = \text{cos}(\frac{\pi}{3}) + i \text{ sin}(\frac{\pi}{3})$
-    \listpart{Let $F_N = \frac{1}{\sqrt{6}}\begin{bmatrix} 
-    1 & 1 & 1 & 1 & 1 & 1 \\
-    1 & \omega & i & i\omega & -1 & -\omega \\
-    1 & i & -1 & -i & 1 & i \\
-    1 & i\omega & -i & \omega & -1 & -i\omega \\
-    1 & -1 & 1 & -1 & 1 & -1 \\
-    1 & -\omega & i & -i\omega & -1 & \omega 
-    \end{bmatrix}$.}
+    \item $\omega = e^{\frac{2\pi i}{6}} = \text{cos}(\frac{\pi}{3}) + i \text{ sin}(\frac{\pi}{3}) = 
+    \frac{1}{2}+\frac{\sqrt{3}}{2}i$
+    %\listpart{Let $F_N = \frac{1}{\sqrt{6}}\begin{bmatrix} 
+    %1 & 1 & 1 & 1 & 1 & 1 \\
+    %1 & \omega & i & i\omega & -1 & -\omega \\
+    %1 & i & -1 & -i & 1 & i \\
+    %1 & i\omega & -i & \omega & -1 & -i\omega \\
+    %1 & -1 & 1 & -1 & 1 & -1 \\
+    %1 & -\omega & i & -i\omega & -1 & \omega 
+    %\end{bmatrix}$.}
     
-    \item $F_N \cdot \frac{1}{\sqrt{2}}(|0\rangle +|3\rangle) = F_N \cdot 
-    \frac{1}{\sqrt{2}}\begin{bmatrix} 1 & 0 & 0 & 1 & 0 & 0 \end{bmatrix}^T$ \\
-    $= \frac{1}{\sqrt{12}}
-    \begin{bmatrix} 2 \\ 1+i\omega \\ 1-i \\ 1+\omega \\ 0 \\ 1-i\omega \end{bmatrix}$
+    \item $QFT_6 \frac{1}{\sqrt{2}}(|0\rangle +|3\rangle) = \frac{1}{\sqrt{2}}(|0\rangle+|2\rangle+|4\rangle) = \frac{1}{\sqrt{2}}\begin{bmatrix} 1 & 0 & 1 & 0 & 1 & 0 \end{bmatrix}^T$ %\\$=\frac{1}{\sqrt{12}}\begin{bmatrix} 2 \\ 1+i\omega \\ 1-i \\ 1+\omega \\ 0 \\ 1-i\omega \end{bmatrix}$
     
-    \item $F_N \cdot \frac{1}{\sqrt{2}}(|0\rangle +|4\rangle) = F_N \cdot 
-    \frac{1}{\sqrt{2}}\begin{bmatrix} 1 & 0 & 0 & 0 & 1 & 0 \end{bmatrix}^T$\\
-    $= \frac{1}{\sqrt{12}}
-    \begin{bmatrix} 2 \\ 0 \\ 2 \\ 0 \\ 2 \\ 0 \end{bmatrix}$
+    \item $QFT_6 \frac{1}{\sqrt{2}}(|0\rangle +|4\rangle)
+    \\ = \frac{1}{\sqrt{12}}\begin{bmatrix}2 & \frac{1}{2}(1-\sqrt{3}i) & \frac{1}{2}(1+\sqrt{3}i) & 2 & \frac{1}{2}(1-\sqrt{3}i) & \frac{1}{2}(1+\sqrt{3}i) \end{bmatrix}^T$  
+    %$F_N \cdot \frac{1}{\sqrt{2}}\begin{bmatrix} & 0 & 0 & 0 & 1 & 0 \end{bmatrix}^T$\\$= \frac{1}{\sqrt{12}}\begin{bmatrix} 2 \\ 0 \\ 2 \\ 0 \\ 2 \\ 0 \end{bmatrix}$
     
-    \item $F_N \cdot \frac{1}{\sqrt{2}}(|0\rangle +|2\rangle+|4\rangle) = F_N \cdot 
-    \frac{1}{\sqrt{3}}\begin{bmatrix} 1 & 0 & 1 & 0 & 1 & 0 \end{bmatrix}^T$\\
-    $= \frac{1}{\sqrt{18}}
-    \begin{bmatrix} 3 \\ i \\ 1 \\ -i \\ 3 \\ i \end{bmatrix}$
+    \item $QFT_6 \frac{1}{\sqrt{2}}(|0\rangle +|2\rangle+|4\rangle) = \frac{1}{\sqrt{2}}(|0\rangle +|3\rangle)$  
+    %$F_N \cdot \frac{1}{\sqrt{3}}\begin{bmatrix} 1 & 0 & 1 & 0 & 1 & 0 \end{bmatrix}^T$\\$= \frac{1}{\sqrt{18}}\begin{bmatrix} 3 \\ i \\ 1 \\ -i \\ 3 \\ i \end{bmatrix}$
     
-    \item $F_N \cdot \frac{1}{\sqrt{2}}(|1\rangle +|3\rangle+|5\rangle) = F_N \cdot 
-    \frac{1}{\sqrt{3}}\begin{bmatrix} 0 & 1 & 0 & 1 & 0 & 1 \end{bmatrix}^T$\\
-    $= \frac{1}{\sqrt{18}}
-    \begin{bmatrix} 3 \\ i\omega \\ i \\ \omega \\ -3 \\ -i\omega \end{bmatrix}$
+    \item $QFT_6 \frac{1}{\sqrt{2}}(|1\rangle +|3\rangle+|5\rangle) = \frac{1}{\sqrt{2}}(|0\rangle -|3\rangle)$ 
+    %$F_N \cdot \frac{1}{\sqrt{3}}\begin{bmatrix} 0 & 1 & 0 & 1 & 0 & 1 \end{bmatrix}^T$\\$= \frac{1}{\sqrt{18}}\begin{bmatrix} 3 \\ i\omega \\ i \\ \omega \\ -3 \\ -i\omega \end{bmatrix}$
 \end{enumerate}
 \end{solution}
 
@@ -81,15 +74,22 @@ let
 $$|b\rangle := H^{\otimes n}|a\rangle = \sum b_x|x\rangle$$
 be the Hadamard transform of $|a\rangle$. \\
 Consider the ‘shift’ by $u$ of the superposition $|a\rangle$, i.e.,
-$$|a'\rangle = \sum a_x|x\oplus u\rangle$$
+$$|a'\rangle = \sum_x a_x|x\oplus u\rangle$$
 where $x\oplus u$ means bitwise sum modulo 2, and its Hadamard transform is
-$$|b'\rangle = \sum b'_x|x\rangle$$
+$$|b'\rangle = \sum_x b'_x|x\rangle$$
 Describe $b'_x$ as a function of $b_x,x$ and $u$. \\ \vspace{2em} \\
 %\textit{[Hint:  First, calculate $b_x$ by applying $H^{\otimes n}$ to $|a\rangle$. Then apply $H^{\otimes n}$ to $|a'\rangle$ and rearrange.]}
 
 \begin{solution}
-$H^{\otimes n}|a\rangle = \frac{1}{2^{n/2}}\sum_x e^{\pi i a\cdot x}|x\rangle$, so $b_x = \frac{1}{2^{n/2}}e^{\pi i a\cdot x}$. \vspace{2em} \\
-$H^{\otimes n}|a'\rangle = \sum_x b_x|x \oplus u\rangle$ and after rearranging, $b'_x = b_x^{(x+u)}$. \\
+We know that $\forall x \in \{0,1\}^n,  H^{\otimes n}|x\rangle=\sum_y (-1)^{x\cdot y}|y\rangle$, \\ 
+so $|b\rangle = \sum_x a_x \sum_y (-1)^{x y}|y\rangle 
+= \sum_y (\sum_x a_x (-1)^{x y})|y\rangle$, \\
+therefore $b_y = \sum_x a_x (-1)^{x y}|y\rangle$
+. \vspace{2em} \\
+Moreover, $H^{\otimes n}|x\oplus u\rangle = \sum_y (-1)^{(x\oplus u)y}|y\rangle = 
+\sum_y (-1)^{xy}(-1)^{uy}|y\rangle$. \\
+Then $H^{\otimes n}|a'\rangle = \sum_y (-1)^{uy}b_y|y\rangle$. \\ 
+Thus $b_y' = (-1)^{uy}b_y$.
 
 \end{solution}
 
@@ -109,7 +109,7 @@ Describe $|b'\rangle$ as a function of $|b\rangle$. % [Hint:  Follow the same hi
 
 \begin{solution}
 $|b\rangle = \frac{1}{\sqrt{M}}\sum a_x QFT_N|x\rangle = \frac{1}{\sqrt{M}}\sum_x a_x \sum_y\omega^{xy}|y\rangle = \frac{1}{\sqrt{M}}\sum_x \sum_y a_x \omega^{xy}|y\rangle$, and $b_y = \sum_y a_x \omega^{xy}$. \\\vspace{2em} \\ 
-Now, $|b'\rangle =  \frac{1}{\sqrt{M}}\sum_x a'_x QFT_N|x+1\rangle = \frac{1}{\sqrt{M}}\sum_x a'_x  \sum_y \omega^{y(x+1)}|y\rangle$, which simplifies to $\frac{1}{\sqrt{M}}\sum_y \omega^y \sum_x a'_x  \omega^{yx}|y\rangle = \frac{1}{\sqrt{M}}\sum_x \omega^y b_y|y\rangle$. So, $|b'\rangle = \sum_x \omega^x |b\rangle$
+Now, $|b'\rangle =  \frac{1}{\sqrt{M}}\sum_x a'_x QFT_N|x+1\rangle = \frac{1}{\sqrt{M}}\sum_x a'_x  \sum_y \omega^{y(x+1)}|y\rangle$, which simplifies to $\frac{1}{\sqrt{M}}\sum_y \omega^y \sum_x a'_x  \omega^{yx}|y\rangle = \frac{1}{\sqrt{M}}\sum_x \omega^y b_y|y\rangle$. So, $|b'\rangle = \sum_x \omega^x |b\rangle$... $$ |b'\rangle = \sum_{y=0}^{M-1}\omega^y b_y|y\rangle$$
 \end{solution}
 
 \newpage
@@ -127,7 +127,12 @@ Now, $|b'\rangle =  \frac{1}{\sqrt{M}}\sum_x a'_x QFT_N|x+1\rangle = \frac{1}{\s
     	\begin{cases} 
     	1, & \text{ if $n$ is even }\\
     	10, & \text{ if $n$ is odd. } 
-    	\end{cases} $
+    	\end{cases} $ \vspace{1em} \\
+    	$10^n \equiv (-1)^n \text{ mod } 11$ \\
+    	As a base case, note $10 \equiv -1 \text{ mod } 11$. \\
+    	Assume $10^k \equiv (-1)^k \text{ mod } 11, \forall k \geq 1$. \\
+    	Then $10^{k+1} = 10^k + 10^1 \equiv (-1)^k(-1)\text{ mod }11 \equiv (-1)^{k+1}$ mod 11.
+    	
     \item Let $ABCD$ be a 4-digit palindromic number. We know $A=10^3D$ and $B=10^1C$, so we can rewrite $ABCD$ as $10^3D+D+10^2C+10C$ which simplifies to $1001D+110C$. Now we can factor the coefficients, $1001 = (7)(11)(13)$ and $110 = (2)(5)(11)$. Thus, $ABCD = 11(2\cdot5C + 7\cdot13D)$ which proves any 4-digit palindromic number is divisible by 11.
 \end{enumerate}
 \end{solution}
