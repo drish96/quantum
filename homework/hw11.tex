@@ -1,0 +1,97 @@
+% % % % % % % % % % % % % % % % % % % % % % %
+%  Problem Set 11                           %
+% % % % % % % % % % % % % % % % % % % % % % % 
+
+\documentclass[11pt]{article}
+% import packages
+\usepackage{ graphicx, 
+              amsmath, 
+              amssymb, 
+              amsthm, 
+              enumerate, 
+              expdlist, 
+              mdframed, 
+              tikz, 
+              tensor, 
+              qcircuit }
+
+% the solution box
+\newenvironment{solution}
+{\begin{mdframed}
+[skipabove=\baselineskip,innertopmargin=\baselineskip,innerbottommargin=\baselineskip]
+}{\end{mdframed}}
+
+% begin doc
+\begin{document}
+\date{}
+\author{Drishan Sarkar}
+\title{CSCI-PHYS 3090 -- Quantum Computing \\ Problem Set \#11 \\ Due: Wednesday, April 28, at 11am}
+\maketitle
+
+\noindent 1. [3-qubit phase flip code] (/50)
+\\
+Consider the following circuit as an error-correcting circuit for 3-qubits. It consists of a single qubit and two ancillae.
+$$\Qcircuit @C=1.5em @R=1.2em {
+    & \lstick{|x\rangle_2} & \gate{H} & \targ & \targ & \multigate{2}{\text{1 qubit phase error}} & \targ & \targ & \gate{H} & \qw \\
+    & \lstick{|0\rangle_1} & \gate{H} & \ctrl{-1} & \qw & \ghost{\text{1 qubit phase error}} & \qw & \ctrl{-1} & \gate{H} & \meter \\
+    & \lstick{|0\rangle_0} & \gate{H} & \qw & \ctrl{-2} & \ghost{\text{1 qubit phase error}} & \ctrl{-2} & \qw & \gate{H} & \meter 
+    } \hspace{2em}$$
+Here you will show that this is a correct circuit for 1 qubit phase errors. A 1 qubit phase error is a phase flip, which is the application of a Pauli-Z gate (note this is not an X gate, which is a bit flip error). To start, find the circuit output for the following types of errors
+\begin{enumerate}[(a)]
+    \item Phase flip on no qubits
+    \item Phase flip on qubit 0
+    \item Phase flip on qubit 1
+    \item Phase flip on qubit 2
+\end{enumerate}
+Consequently, determine the possible measurement results on the two ancillae and when they occur. Show what corresponding actions you need to perform in order to detect and remedy any kind of single qubit phase error. \\
+\\ What do you have to do to the ancillae to prepare them for use in a subsequent circuit operation?
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item $|x00\rangle$
+    \item $|x01\rangle$
+    \item $|x10\rangle$
+    \item $|x00\rangle$
+\end{enumerate} \vspace{3em}
+The output of the measurement gate would be a $|1\rangle$ on the ancillary qubit that was phase flipped, since the Hadamard essentially changes the basis from computational to plus/minus ($|0\rangle$ becomes $|+\rangle$) and the phase error changes a $|+\rangle$ to $|-\rangle$. In order to prepare them for use in a subsequent circuit operation, we must apply a NOT gate to the qubit which had a phase error.
+\end{solution}
+
+\newpage
+
+\noindent 2. [The stabilizers of Bell states] (/50)
+\\
+The error correcting operations that we have considered in class are part of a more formal framework that uses the notion of stabilizers. The principal idea is that an $n$-qubit quantum state can be uniquely defined by $n$ stabilizing operators, where a quantum state $|\psi\rangle$ is stabilized by an operator $S$ if $$S|\psi\rangle = |\psi\rangle$$
+Here we will find the stabilizers of the Bell states. Recall the Bell state $|\phi_{00}\rangle=\frac{1}{\sqrt{2}}[|00\rangle+|11\rangle]$.
+
+\begin{enumerate}[(a)]
+\item $|\phi_{00}\rangle$ is a simultaneous +1 eigenstate of two commuting two-qubit Pauli matrices, $P_1$ and $P_2$.  What are $P_1$ and $P_2$?
+\item Show that the other Bell states, $|\phi_{x_1x_2}\rangle = (I\otimes X^{x_1}Z^{x_2})|\phi_{00}\rangle$ are eigenstates of the same $P_1$ and $P_2$ and report their eigenvalues.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item $P_1 = X\otimes X = \begin{bmatrix}
+    0&0&0&1 \\
+    0&0&1&0 \\
+    0&1&0&0 \\
+    1&0&0&0 \\
+    \end{bmatrix}, P_2 = Z\otimes Z = \begin{bmatrix}
+    1&0&0&0 \\
+    0&-1&0&0 \\
+    0&0&-1&0 \\
+    0&0&0&1 \\
+    \end{bmatrix}$, \\ since
+    $|\phi_{00}\rangle = \frac{1}{\sqrt{2}}\begin{bmatrix}1&0&0&1\end{bmatrix}^T$, $P_1|\phi_{00}\rangle=|\phi_{00}\rangle$, $P_2|\phi_{00}\rangle=|\phi_{00}\rangle$, and $P_1P_2 = P_2P_1$.
+    \item For $|\phi_{10}\rangle = (I\otimes X)|\phi_{00}\rangle = \frac{1}{\sqrt{2}}\begin{bmatrix}0&1&1&0\end{bmatrix}^T$, \\
+    $P_1|\phi_{10}\rangle = |\phi_{10}\rangle \implies$ eigenvalue is 1, \\
+    $P_2|\phi_{10}\rangle =-|\phi_{10}\rangle \implies$ eigenvalue is -1. \\
+    For $|\phi_{01}\rangle = (I\otimes Z)|\phi_{00}\rangle = \frac{1}{\sqrt{2}}\begin{bmatrix}1&0&0&-1\end{bmatrix}^T$, \\
+    $P_1|\phi_{01}\rangle =-|\phi_{01}\rangle \implies$ eigenvalue is -1, \\
+    $P_2|\phi_{01}\rangle = |\phi_{01}\rangle \implies$ eigenvalue is 1. \\
+    For $|\phi_{11}\rangle = (I\otimes XZ)|\phi_{00}\rangle = \frac{1}{\sqrt{2}}\begin{bmatrix}0&1&-1&0\end{bmatrix}^T$, \\
+    $P_1|\phi_{11}\rangle =-|\phi_{11}\rangle \implies$ eigenvalue is -1, \\
+    $P_2|\phi_{11}\rangle =-|\phi_{11}\rangle \implies$ eigenvalue is -1. \\
+    
+\end{enumerate}
+\end{solution}
+% end doc
+\end{document}
