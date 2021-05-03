@@ -1,0 +1,101 @@
+% % % % % % % % % % % % % % % % % % % % % % %
+%  Problem Set 10                           %
+% % % % % % % % % % % % % % % % % % % % % % % 
+
+\documentclass[11pt]{article}
+% import packages
+\usepackage{ graphicx, 
+              amsmath, 
+              amssymb, 
+              amsthm, 
+              enumerate, 
+              expdlist, 
+              mdframed, 
+              tikz, 
+              tensor, 
+              qcircuit }
+% the solution box
+\newenvironment{solution}{\begin{mdframed}[skipabove=\baselineskip,innertopmargin=\baselineskip,innerbottommargin=\baselineskip]
+  }{\end{mdframed}}
+ 
+% begin doc
+\begin{document}
+\date{}
+\author{Drishan Sarkar}
+\title{CSCI-PHYS 3090 -- Quantum Computing \\ Problem Set \#10 \\ Due: Wednesday, April 21, at 11am}
+\maketitle
+
+\noindent 1. [The quantum Fourier transform] (/30)
+\\
+Consider a periodic superposition
+$$|a\rangle=\sum_{j=0}^{M/k-1}\sqrt{\frac{k}{M}}|jk\rangle.$$
+Let $|b\rangle=\sum_jb_j|j\rangle$ be its $QFT_M$.
+
+\begin{enumerate}[(a)]
+    \item Derive an expression for $b_j$.
+    \item Show that $b_j = \frac{1}{\sqrt{k}}$ if $j$ is a multiple of $M/k$ and 0 otherwise.
+    \item Use Part (b) to describe the result of applying the $QFT_M$ to 
+    $$|a'\rangle=\sum_{j=0}^{M/k-1}\sqrt{\frac{k}{M}}|jk+1\rangle.$$
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item %$b_j = \frac{1}{\sqrt{M}}\sum_k \sqrt{\frac{k}{M}}\omega^{jk}|k\rangle = \frac{\sqrt{k}}{M}\sum_k \omega^{jk}|k\rangle$
+    \item
+    \item 
+\end{enumerate}
+\end{solution}
+
+\newpage
+
+\noindent 2. [The quantum factoring algorithm] (/30)
+\\
+In this question we will carry out some steps of the quantum factoring algorithm for $N = 21$.
+
+\begin{enumerate}[(a)] 
+    \item What is the period $k$ of the periodic superposition set up by the quantum algorithm if it chooses $x= 2$?
+    \item Use $k$ to find a non-trivial square root of 1 (mod 21).
+    \item Show how the algorithm uses the previous answer to factor 21.
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item The period $k=6$.
+    \item $x^{k/2} = 8$ is a non-trivial square root of 1 (mod 21).
+    \item The algorithm uses $gcd(x^{k/2}+1, N)$ and $gcd(x^{k/2}-1, N)$ which is $gcd(9, 21)$ and $gcd(7, 21)$ to find the factors of 21, (3 and 7).
+\end{enumerate}
+\end{solution}
+
+\newpage
+
+\noindent 3. [Combining quantum Fourier transforms] (/40)
+\\
+The goal of this problem is to construct a quantum circuit for the QFT on a composite Hilbert space using two QFTs on smaller spaces (and another operation). That is, for some computational basis state $|x\rangle$ in a $pq$-dimensional Hilbert space, we wish to map
+$$|x\rangle\xrightarrow{}\frac{1}{\sqrt{pq}}\sum_{y=0}^{pq-1}e^{2\pi ixy/pq}|y\rangle$$
+for relatively prime $p$ and $q$ using a QFT mod $p$ and a QFT mod $q$.
+
+\begin{enumerate}[(a)] 
+    \item Show that the sets
+    $$A := \{p\cdot0 \text{ mod }q, p\cdot2 \text{ mod }q, \cdots , p\cdot(q-1) \text{ mod }q\}$$
+    and
+    $$B := \{0,1,\cdots,q-1\}$$
+    are equal. That is, construct a bijection $f:A\xrightarrow{}B$ and prove $f$ is a $1-1$ mapping. %[Hint:  Use the fact thatpandqare relatively prime.  In fact, the postulate is not trueif they are not coprime; think of 2 and 4 as a counterexample.]
+\listpart{Given some $0\leq x < pq$, we can decompose $x$ into $x=x_1p+x_2$ where $0\leq x_1 < q$ and $0\leq x_2 < p$. Similarly for $0\leq y < pq-1$ we can write $y =y_1q+y_2$ for $0\leq y_2 < q$ and $0 \leq y_1 < p.$}
+\listpart{Now we can reexpress our computational basis state: $$|x\rangle = |x_1p + x_2\rangle = |\widetilde{x_1}\rangle|x_2\rangle$$ where $\widetilde{x_1} = x_1p \text{ mod }q$.}
+    \item Fill in the blank
+    \item 
+    \item 
+    \item 
+    \item 
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[(a)]
+    \item
+    \item
+    \item 
+    \item 
+\end{enumerate}
+\end{solution}
+% end doc
+\end{document}
